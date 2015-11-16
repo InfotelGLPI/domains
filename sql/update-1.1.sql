@@ -1,0 +1,1 @@
+ALTER TABLE `glpi_plugin_domain` ADD `recursive` tinyint(1) NOT NULL default '0' AFTER `FK_entities`;
