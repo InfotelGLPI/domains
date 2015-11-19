@@ -92,7 +92,7 @@ function plugin_domains_install() {
             foreach ($DB->request($query) as $data) {
                $iq = "INSERT INTO `glpi_notepads`
                              (`itemtype`, `items_id`, `content`, `date`, `date_mod`)
-                      VALUES ('".getItemTypeForTable($t)."', '".$data['id']."',
+                              VALUES ('PluginDomainsDomain', '".$data['id']."',
                               '".addslashes($data['notepad'])."', NOW(), NOW())";
                $DB->queryOrDie($iq, "0.85 migrate notepad data");
             }
@@ -168,7 +168,7 @@ function plugin_domains_install() {
    
    PluginDomainsProfile::initProfile();
    PluginDomainsProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
-   $migration = new Migration("1.8.0");
+   $migration = new Migration("1.7.0");
    $migration->dropTable('glpi_plugin_domains_profiles');
    return true;
 }
