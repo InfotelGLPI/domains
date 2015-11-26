@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Domains plugin 1.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-19 15:53+0100\n"
+"POT-Creation-Date: 2015-11-26 10:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,22 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:329 inc/domain.class.php:785 inc/domain_item.class.php:509
+#: hook.php:369 inc/domain_item.class.php:505
 msgid "Does not expire"
 msgstr ""
 
-#: hook.php:392 inc/domain_item.class.php:427
+#: hook.php:433 inc/domain_item.class.php:423
 msgid "Associate a domain"
 msgstr ""
 
-#: setup.php:109 inc/domain.class.php:43
+#: setup.php:86 inc/domain.class.php:46 inc/menu.class.php:35
+#: inc/profile.class.php:145
 msgid "Domain"
 msgid_plural "Domains"
 msgstr[0] ""
 msgstr[1] ""
 
-#: setup.php:123
-msgid "This plugin requires GLPI >= 0.84"
+#: setup.php:100
+msgid "This plugin requires GLPI >= 0.85"
 msgstr ""
 
 #: inc/config.class.php:39
@@ -44,7 +45,7 @@ msgstr ""
 msgid "Time of checking of validity of domains"
 msgstr ""
 
-#: inc/config.class.php:73 inc/domain.class.php:466
+#: inc/config.class.php:73 inc/domain.class.php:618
 msgid "Domains expired since more"
 msgstr ""
 
@@ -52,11 +53,11 @@ msgstr ""
 msgid "Domains expiring in less than"
 msgstr ""
 
-#: inc/domain.class.php:280
+#: inc/domain.class.php:268
 msgid "Empty for infinite"
 msgstr ""
 
-#: inc/domain.class.php:394 inc/notificationtargetdomain.class.php:75
+#: inc/domain.class.php:544 inc/notificationtargetdomain.class.php:75
 msgid "Expired or expiring domains"
 msgstr ""
 
@@ -74,8 +75,4 @@ msgstr ""
 #: inc/notificationtargetdomain.class.php:39
 #: inc/notificationtargetdomain.class.php:50
 msgid "Expiring domains"
-msgstr ""
-
-#: inc/profile.class.php:37 inc/profile.class.php:141
-msgid "Rights management"
 msgstr ""

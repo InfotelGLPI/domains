@@ -3,39 +3,40 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Xavier CAILLAUD <tsmr@thetsmr.fr>, 2013
+# Xavier CAILLAUD <tsmr@thetsmr.fr>, 2013,2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - domains plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-19 15:53+0100\n"
-"PO-Revision-Date: 2015-11-10 15:10+0100\n"
+"POT-Creation-Date: 2015-11-26 10:27+0100\n"
+"PO-Revision-Date: 2015-11-26 10:29+0100\n"
 "Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
-"Language-Team: French (France) (http://www.transifex.com/projects/p/GLPI_domains/language/fr_FR/)\n"
+"Language-Team: French (France) (http://www.transifex.com/tsmr/GLPI_domains/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.8.6\n"
 
-#: hook.php:329 inc/domain.class.php:785 inc/domain_item.class.php:509
+#: hook.php:369 inc/domain_item.class.php:505
 msgid "Does not expire"
 msgstr "N'expire pas"
 
-#: hook.php:392 inc/domain_item.class.php:427
+#: hook.php:433 inc/domain_item.class.php:423
 msgid "Associate a domain"
 msgstr "Associer un domaine"
 
-#: setup.php:109 inc/domain.class.php:43
+#: setup.php:86 inc/domain.class.php:46 inc/menu.class.php:35
+#: inc/profile.class.php:145
 msgid "Domain"
 msgid_plural "Domains"
 msgstr[0] "Domaine"
 msgstr[1] "Domaines"
 
-#: setup.php:123
-msgid "This plugin requires GLPI >= 0.84"
-msgstr "Ce plugin nécessite GLPI >= 0.84"
+#: setup.php:100
+msgid "This plugin requires GLPI >= 0.85"
+msgstr "Ce plugin nécessite GLPI >= 0.85"
 
 #: inc/config.class.php:39
 msgid "Plugin Setup"
@@ -45,7 +46,7 @@ msgstr "Configuration du plugin"
 msgid "Time of checking of validity of domains"
 msgstr "Délai de vérification de validité des domaines"
 
-#: inc/config.class.php:73 inc/domain.class.php:466
+#: inc/config.class.php:73 inc/domain.class.php:618
 msgid "Domains expired since more"
 msgstr "Domaines expirés depuis plus de"
 
@@ -53,11 +54,11 @@ msgstr "Domaines expirés depuis plus de"
 msgid "Domains expiring in less than"
 msgstr "Domaines  qui vont expirer dans moins de"
 
-#: inc/domain.class.php:280
+#: inc/domain.class.php:268
 msgid "Empty for infinite"
 msgstr "Vide pour infini"
 
-#: inc/domain.class.php:394 inc/notificationtargetdomain.class.php:75
+#: inc/domain.class.php:544 inc/notificationtargetdomain.class.php:75
 msgid "Expired or expiring domains"
 msgstr "Domaines expirés ou domaines qui vont expirer"
 
@@ -76,7 +77,3 @@ msgstr "Domaines expirés"
 #: inc/notificationtargetdomain.class.php:50
 msgid "Expiring domains"
 msgstr "Domaines  qui vont expirer"
-
-#: inc/profile.class.php:37 inc/profile.class.php:141
-msgid "Rights management"
-msgstr "Gestion des droits"

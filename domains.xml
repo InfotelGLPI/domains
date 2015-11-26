@@ -21,6 +21,14 @@
    </authors>
    <versions>
       <version>
+          <num>1.7.0</num>
+          <compatibility>0.90</compatibility>
+      </version>
+      <version>
+          <num>1.7.0</num>
+          <compatibility>0.85</compatibility>
+      </version>
+      <version>
           <num>1.6.0</num>
           <compatibility>0.84</compatibility>
       </version>
@@ -75,6 +83,10 @@
       <lang>es_ES</lang>
       <lang>it_IT</lang>
       <lang>tr_TR</lang>
+      <lang>cs_CZ</lang>
+      <lang>pt_BR</lang>
+      <lang>ru_RU</lang>
+      <lang>de_DE</lang>
    </langs>
    <license><![CDATA[GPL v2+]]></license>
    <tags>
