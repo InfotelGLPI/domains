@@ -163,12 +163,15 @@ class PluginDomainsDomain extends CommonDBTM {
       $tab[30]['name'] = __('ID');
       $tab[30]['datatype'] = 'number';
 
-
       $tab[80]['table'] = 'glpi_entities';
       $tab[80]['field'] = 'completename';
       $tab[80]['name'] = __('Entity');
       $tab[80]['datatype'] = 'dropdown';
-
+      
+      $tab[81]['table']       = 'glpi_entities';
+      $tab[81]['field']       = 'entities_id';
+      $tab[81]['name']        = __('Entity')."-".__('ID');
+      
       return $tab;
    }
 
