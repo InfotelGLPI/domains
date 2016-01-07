@@ -88,7 +88,7 @@ function plugin_version_domains() {
       'oldname' => 'domain',
       'license' => 'GPLv2+',
       'author'  => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
-      'homepage'=>'https://forge.indepnet.net/projects/domains',
+      'homepage'=>'https://github.com/InfotelGLPI/domains',
       'minGlpiVersion' => '0.85',// For compatibility / no install in version < 0.80
    );
 
