@@ -704,6 +704,134 @@ class PluginDomainsDomain extends CommonDBTM {
       }
       return $types;
    }
+   
+    /**
+    * Show domains associated to a supplier
+    *
+    * @since version 0.84
+    *
+    * @param $item            CommonDBTM object for which associated domains must be displayed
+    * @param $withtemplate    (default '')
+   **/
+   static function showForSupplier(CommonDBTM $item, $withtemplate='') {
+      global $DB, $CFG_GLPI;
+
+      $ID = $item->getField('id');
+
+      if ($item->isNewID($ID)) {
+         return false;
+      }
+      if (!Session::haveRight('plugin_domains', READ)) {
+         return false;
+      }
+
+      if (!$item->can($item->fields['id'],READ)) {
+         return false;
+      }
+
+      if (empty($withtemplate)) {
+         $withtemplate = 0;
+      }$withtemplate = 0;
+
+      $rand          = mt_rand();
+      $is_recursive  = $item->isRecursive();
+      
+      $query = "SELECT `glpi_plugin_domains_domains`.`id` AS assocID,
+                       `glpi_entities`.`id` AS entity,
+                       `glpi_plugin_domains_domains`.`name` AS assocName,
+                       `glpi_plugin_domains_domains`.* "
+        ."FROM `glpi_plugin_domains_domains` "
+        ." LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `glpi_plugin_domains_domains`.`entities_id`) "
+        ." WHERE `suppliers_id` = '$ID' "
+        . getEntitiesRestrictRequest(" AND ","glpi_plugin_domains_domains",'','',true);
+      $query.= " ORDER BY `assocName` ";
+
+      $result = $DB->query($query);
+      $number = $DB->numrows($result);
+      $i      = 0;
+
+      $domains       = array();
+      $domain        = new PluginDomainsDomain();
+      $used          = array();
+      if ($numrows = $DB->numrows($result)) {
+         while ($data = $DB->fetch_assoc($result)) {
+            $domains[$data['assocID']] = $data;
+            $used[$data['id']] = $data['id'];
+         }
+      }
+
+      echo "<div class='spaced'>";
+      echo "<table class='tab_cadre_fixe'>";
+
+      echo "<tr>";
+      echo "<th>".__('Name')."</th>";
+      if (Session::isMultiEntitiesMode()) {
+         echo "<th>".__('Entity')."</th>";
+      }
+      echo "<th>".__('Group in charge of the hardware')."</th>";
+      echo "<th>".__('Supplier')."</th>";
+      echo "<th>".__('Technician in charge of the hardware')."</th>";
+      echo "<th>".__('Type')."</th>";
+      echo "<th>".__('Creation date')."</th>";
+      echo "<th>".__('Expiration date')."</th>";
+      echo "</tr>";
+      $used = array();
+
+      if ($number) {
+
+         Session::initNavigateListItems('PluginDomainsDomain',
+                           //TRANS : %1$s is the itemtype name,
+                           //        %2$s is the name of the item (used for headings of a list)
+                                        sprintf(__('%1$s = %2$s'),
+                                                $item->getTypeName(1), $item->getName()));
+
+         
+         foreach  ($domains as $data) {
+            $domainID   = $data["id"];
+            $link       = NOT_AVAILABLE;
+
+            if ($domain->getFromDB($domainID)) {
+               $link    = $domain->getLink();
+            }
+
+            Session::addToNavigateListItems('PluginDomainsDomain', $domainID);
+            
+            $used[$domainID] = $domainID;
+            $assocID      = $data["assocID"];
+
+            echo "<tr class='tab_bg_1".($data["is_deleted"]?"_2":"")."'>";
+            echo "<td class='center'>$link</td>";
+            if (Session::isMultiEntitiesMode()) {
+               echo "<td class='center'>".Dropdown::getDropdownName("glpi_entities", $data['entities_id']).
+                    "</td>";
+            }
+            echo "<td class='center'>".Dropdown::getDropdownName("glpi_groups",$data["groups_id_tech"])."</td>";
+            echo "<td>";
+            echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/enterprise.form.php?ID=".$data["suppliers_id"]."\">";
+            echo Dropdown::getDropdownName("glpi_suppliers",$data["suppliers_id"]);
+            if ($_SESSION["glpiis_ids_visible"] == 1 )
+               echo " (".$data["suppliers_id"].")";
+            echo "</a></td>";
+            echo "<td class='center'>".getUsername($data["users_id_tech"])."</td>";
+            echo "<td class='center'>".Dropdown::getDropdownName("glpi_plugin_domains_domaintypes",$data["plugin_domains_domaintypes_id"])."</td>";
+            echo "<td class='center'>".Html::convdate($data["date_creation"])."</td>";
+            if ($data["date_expiration"] <= date('Y-m-d') 
+                  && !empty($data["date_expiration"])) {
+               echo "<td class='center'><div class='deleted'>".convdate($data["date_expiration"])."</div></td>";
+            } else if (empty($data["date_expiration"])) {
+               echo "<td class='center'>".__('Does not expire', 'domains')."</td>";
+            } else {
+               echo "<td class='center'>".Html::convdate($data["date_expiration"])."</td>";
+            }
+            echo "</tr>";
+            $i++;
+         }
+      }
+
+
+      echo "</table>";
+      echo "</div>";
+   }
 
 }
 
