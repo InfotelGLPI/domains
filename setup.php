@@ -67,6 +67,10 @@ function plugin_init_domains() {
          $PLUGIN_HOOKS['use_massive_action']['domains']=1;
       }
       
+      if (class_exists('PluginAccountsAccount')) {
+         PluginAccountsAccount::registerType('PluginDomainsDomain');
+      }
+      
       if (class_exists('PluginDomainsDomain_Item')) { // only if plugin activated
          $PLUGIN_HOOKS['plugin_datainjection_populate']['domains'] = 
                                                    'plugin_datainjection_populate_domains';
