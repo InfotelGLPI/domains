@@ -1,17 +1,12 @@
 <?php
-
-
 /*
- * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
  Domains plugin for GLPI
- Copyright (C) 2003-2011 by the Domains Development Team.
-
- https://forge.indepnet.net/projects/domains
+ Copyright (C) 2015 by the Domains Development Team.
  -------------------------------------------------------------------------
 
  LICENSE
-		
+
  This file is part of Domains.
 
  Domains is free software; you can redistribute it and/or modify
@@ -26,7 +21,7 @@
 
  You should have received a copy of the GNU General Public License
  along with Domains. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+ --------------------------------------------------------------------------  
  */
 
 include ('../../../inc/includes.php');

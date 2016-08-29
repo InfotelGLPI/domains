@@ -5,7 +5,6 @@
  Domains plugin for GLPI
  Copyright (C) 2003-2011 by the Domains Development Team.
 
- https://forge.indepnet.net/projects/domains
  -------------------------------------------------------------------------
 
  LICENSE
