@@ -303,7 +303,6 @@ class PluginDomainsDomain extends CommonDBTM {
       echo "</td>";
 
       echo "<td class='center' colspan='2'>";
-      printf(__('Last update on %s'), Html::convDateTime($this->fields["date_mod"]));
       echo "</td>";
 
       echo "</tr>";
