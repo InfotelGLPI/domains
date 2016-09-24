@@ -2,28 +2,28 @@
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
- Domains plugin for GLPI
- Copyright (C) 2003-2011 by the Domains Development Team.
+ domains plugin for GLPI
+ Copyright (C) 2009-2016 by the domains Development Team.
 
- https://forge.indepnet.net/projects/domains
+ https://github.com/InfotelGLPI/domains
  -------------------------------------------------------------------------
 
  LICENSE
-		
- This file is part of Domains.
+      
+ This file is part of domains.
 
- Domains is free software; you can redistribute it and/or modify
+ domains is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
 
- Domains is distributed in the hope that it will be useful,
+ domains is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Domains. If not, see <http://www.gnu.org/licenses/>.
+ along with domains. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
 
@@ -39,7 +39,7 @@ function plugin_domains_install() {
    if (!TableExists("glpi_plugin_domain") && !TableExists("glpi_plugin_domains_domains")) {
       
       $install=true;
-      $DB->runFile(GLPI_ROOT ."/plugins/domains/sql/empty-1.5.0.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/domains/sql/empty-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_domain") && !FieldExists("glpi_plugin_domain","recursive")) {
       
@@ -124,13 +124,13 @@ function plugin_domains_install() {
       $query = "INSERT INTO `glpi_notifications`
                                    VALUES (NULL, 'Alert Expired Domains', 0, 'PluginDomainsDomain', 'ExpiredDomains',
                                           'mail',".$itemtype.",
-                                          '', 1, 1, '2010-02-17 22:36:46');";
+                                          '', 1, 1, '2010-02-17 22:36:46', '2010-02-17 22:36:46');";
       
       $result=$DB->query($query);
       $query = "INSERT INTO `glpi_notifications`
                                    VALUES (NULL, 'Alert Domains Which Expire', 0, 'PluginDomainsDomain', 'DomainsWhichExpire',
                                           'mail',".$itemtype.",
-                                          '', 1, 1, '2010-02-17 22:36:46');";
+                                          '', 1, 1, '2010-02-17 22:36:46', '2010-02-17 22:36:46');";
 
       $result=$DB->query($query);
    }
@@ -162,45 +162,45 @@ function plugin_domains_install() {
       Plugin::migrateItemType(
          array(1200 => "PluginAppliancesAppliance",1300 => "PluginWebapplicationsWebapplication"),
          array("glpi_plugin_domains_domains_items"));
-	}
-	
-	CronTask::Register('PluginDomainsDomain', 'DomainsAlert', DAY_TIMESTAMP);
+   }
+   
+   CronTask::Register('PluginDomainsDomain', 'DomainsAlert', DAY_TIMESTAMP);
    
    PluginDomainsProfile::initProfile();
    PluginDomainsProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
-   $migration = new Migration("1.7.0");
+   $migration = new Migration("1.8.0");
    $migration->dropTable('glpi_plugin_domains_profiles');
    return true;
 }
 
 function plugin_domains_uninstall() {
-	global $DB;
+   global $DB;
 
    include_once (GLPI_ROOT."/plugins/domains/inc/profile.class.php");
    include_once (GLPI_ROOT."/plugins/domains/inc/menu.class.php");
 
-	$tables = array("glpi_plugin_domains_domains",
-					"glpi_plugin_domains_domains_items",
-					"glpi_plugin_domains_domaintypes",
-					"glpi_plugin_domains_profiles",
-					"glpi_plugin_domains_configs");
+   $tables = array("glpi_plugin_domains_domains",
+               "glpi_plugin_domains_domains_items",
+               "glpi_plugin_domains_domaintypes",
+               "glpi_plugin_domains_profiles",
+               "glpi_plugin_domains_configs");
 
-	foreach($tables as $table)
-		$DB->query("DROP TABLE IF EXISTS `$table`;");
+   foreach($tables as $table)
+      $DB->query("DROP TABLE IF EXISTS `$table`;");
    
    //old versions	
    $tables = array("glpi_plugin_domain",
                "glpi_plugin_domain_profiles",
-					"glpi_plugin_domain_device",
-					"glpi_dropdown_plugin_domain_type",
+               "glpi_plugin_domain_device",
+               "glpi_dropdown_plugin_domain_type",
                "glpi_plugin_domains_config",
-					"glpi_plugin_domain_mailing",
+               "glpi_plugin_domain_mailing",
                "glpi_plugin_domains_default");
 
-	foreach($tables as $table)
-		$DB->query("DROP TABLE IF EXISTS `$table`;");
+   foreach($tables as $table)
+      $DB->query("DROP TABLE IF EXISTS `$table`;");
 
-	$notif = new Notification();
+   $notif = new Notification();
    $options = array('itemtype' => 'PluginDomainsDomain',
                     'event'    => 'ExpiredDomains',
                     'FIELDS'   => 'id');
@@ -228,18 +228,19 @@ function plugin_domains_uninstall() {
          }
       $template->delete($data);
    }
-   	
+      
    $tables_glpi = array("glpi_displaypreferences",
-					"glpi_documents_items",
-					"glpi_bookmarks",
-					"glpi_logs",
-					"glpi_items_tickets",
-					"glpi_contracts_items");
+               "glpi_documents_items",
+               "glpi_bookmarks",
+               "glpi_logs",
+               "glpi_items_tickets",
+               "glpi_contracts_items",
+               "glpi_notepads");
 
-	foreach($tables_glpi as $table_glpi)
-		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginDomainsDomain%';");
+   foreach($tables_glpi as $table_glpi)
+      $DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginDomainsDomain%';");
 
-	if (class_exists('PluginDatainjectionModel')) {
+   if (class_exists('PluginDatainjectionModel')) {
       PluginDatainjectionModel::clean(array('itemtype'=>'PluginDomainsDomain'));
    }
 
@@ -252,7 +253,7 @@ function plugin_domains_uninstall() {
    
    PluginDomainsProfile::removeRightsFromSession();
 
-	return true;
+   return true;
 }
 
 function plugin_domains_postinit() {
@@ -271,39 +272,38 @@ function plugin_domains_postinit() {
 
 function plugin_domains_AssignToTicket($types) {
 
-	if (Session::haveRight("plugin_domains_open_ticket","1"))
-		$types['PluginDomainsDomain']=PluginDomainsDomain::getTypeName(2);
-	return $types;
+   if (Session::haveRight("plugin_domains_open_ticket","1"))
+      $types['PluginDomainsDomain']=PluginDomainsDomain::getTypeName(2);
+   return $types;
 }
 
 
 // Define dropdown relations
 function plugin_domains_getDatabaseRelations() {
 
-	$plugin = new Plugin();
+   $plugin = new Plugin();
 
-	if ($plugin->isActivated("domains"))
-		return array("glpi_plugin_domains_domaintypes"=>array("glpi_plugin_domains_domains"=>"plugin_domains_domaintypes_id"),
+   if ($plugin->isActivated("domains"))
+      return array("glpi_plugin_domains_domaintypes"=>array("glpi_plugin_domains_domains"=>"plugin_domains_domaintypes_id"),
                      "glpi_users"=>array("glpi_plugin_domains_domains"=>"users_id_tech"),
                      "glpi_groups"=>array("glpi_plugin_domains_domains"=>"groups_id_tech"),
                      "glpi_suppliers"=>array("glpi_plugin_domains_domains"=>"glpi_suppliers"),
                      "glpi_plugin_domains_domains"=>array("glpi_plugin_domains_domains_items"=>"plugin_domains_domains_id"),
-                     "glpi_profiles" => array ("glpi_plugin_domains_profiles" => "profiles_id"),
                      "glpi_entities"=>array("glpi_plugin_domains_domains"=>"entities_id",
-												"glpi_plugin_domains_domaintypes"=>"entities_id"));
-	else
-		return array();
+                                    "glpi_plugin_domains_domaintypes"=>"entities_id"));
+   else
+      return array();
 }
 
 // Define Dropdown tables to be manage in GLPI :
 function plugin_domains_getDropdown() {
-	
-	$plugin = new Plugin();
+   
+   $plugin = new Plugin();
 
-	if ($plugin->isActivated("domains"))
-		return array('PluginDomainsDomainType'=>PluginDomainsDomainType::getTypeName(2));
-	else
-		return array();
+   if ($plugin->isActivated("domains"))
+      return array('PluginDomainsDomainType'=>PluginDomainsDomainType::getTypeName(2));
+   else
+      return array();
 }
 
 ////// SEARCH FUNCTIONS ///////() {
@@ -337,91 +337,91 @@ function plugin_domains_getAddSearchOptions($itemtype) {
                                                    array('table'      => 'glpi_plugin_domains_domains',
                                                          'joinparams' => $sopt[4410]['joinparams'])));
       }
-	}
-	return $sopt;
+   }
+   return $sopt;
 }
 
 function plugin_domains_displayConfigItem($type,$ID,$data,$num) {
 
-	$searchopt=&Search::getOptions($type);
-	$table=$searchopt[$ID]["table"];
-	$field=$searchopt[$ID]["field"];
-	
-	switch ($table.'.'.$field) {
+   $searchopt=&Search::getOptions($type);
+   $table=$searchopt[$ID]["table"];
+   $field=$searchopt[$ID]["field"];
+   
+   switch ($table.'.'.$field) {
       case "glpi_plugin_domains_domains.date_expiration" :
          if ($data[$num][0]['name'] <= date('Y-m-d') && !empty($data[$num][0]['name']))
             return " class=\"deleted\" ";
          break;
-	}
-	return "";
+   }
+   return "";
 }
 
 function plugin_domains_giveItem($type,$ID,$data,$num) {
-	global $CFG_GLPI, $DB;
+   global $CFG_GLPI, $DB;
 
-	$searchopt=&Search::getOptions($type);
-	$table=$searchopt[$ID]["table"];
-	$field=$searchopt[$ID]["field"];
+   $searchopt=&Search::getOptions($type);
+   $table=$searchopt[$ID]["table"];
+   $field=$searchopt[$ID]["field"];
 
-	switch ($table.'.'.$field) {
-		case "glpi_plugin_domains_domains.date_expiration" :
-			if (empty($data[$num][0]['name']))
-				$out=__('Does not expire', 'domains');
-			else
-				$out= Html::convdate($data[$num][0]['name']);
+   switch ($table.'.'.$field) {
+      case "glpi_plugin_domains_domains.date_expiration" :
+         if (empty($data[$num][0]['name']))
+            $out=__('Does not expire', 'domains');
+         else
+            $out= Html::convdate($data[$num][0]['name']);
          return $out;
          break;
-		case "glpi_plugin_domains_domains_items.items_id" :
-			$query_device = "SELECT DISTINCT `itemtype`
-							FROM `glpi_plugin_domains_domains_items`
-							WHERE `plugin_domains_domains_id` = '".$data['id']."'
-							ORDER BY `itemtype`";
-			$result_device = $DB->query($query_device);
-			$number_device = $DB->numrows($result_device);
-			$out='';
-			$domains=$data['id'];
-			if ($number_device>0) {
-				for ($i=0 ; $i < $number_device ; $i++) {
-					$column = "name";
-					$itemtype = $DB->result($result_device, $i, "itemtype");
-					
-					if (!class_exists($itemtype)) {
+      case "glpi_plugin_domains_domains_items.items_id" :
+         $query_device = "SELECT DISTINCT `itemtype`
+                     FROM `glpi_plugin_domains_domains_items`
+                     WHERE `plugin_domains_domains_id` = '".$data['id']."'
+                     ORDER BY `itemtype`";
+         $result_device = $DB->query($query_device);
+         $number_device = $DB->numrows($result_device);
+         $out='';
+         $domains=$data['id'];
+         if ($number_device>0) {
+            for ($i=0 ; $i < $number_device ; $i++) {
+               $column = "name";
+               $itemtype = $DB->result($result_device, $i, "itemtype");
+               
+               if (!class_exists($itemtype)) {
                   continue;
                }
-					$item = new $itemtype();
-					if ($item->canView()) {
+               $item = new $itemtype();
+               if ($item->canView()) {
                   $table_item = getTableForItemType($itemtype);
-						$query = "SELECT `".$table_item."`.*, `glpi_entities`.`ID` AS entity "
-						." FROM `glpi_plugin_domains_domains_items`, `".$table_item
-						."` LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `".$table_item."`.`entities_id`) "
-						." WHERE `".$table_item."`.`id` = `glpi_plugin_domains_domains_items`.`items_id`
-						AND `glpi_plugin_domains_domains_items`.`itemtype` = '$itemtype'
-						AND `glpi_plugin_domains_domains_items`.`plugin_domains_domains_id` = '".$domains."' "
-						. getEntitiesRestrictRequest(" AND ",$table_item,'','',$item->maybeRecursive());
+                  $query = "SELECT `".$table_item."`.*, `glpi_entities`.`ID` AS entity "
+                  ." FROM `glpi_plugin_domains_domains_items`, `".$table_item
+                  ."` LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `".$table_item."`.`entities_id`) "
+                  ." WHERE `".$table_item."`.`id` = `glpi_plugin_domains_domains_items`.`items_id`
+                  AND `glpi_plugin_domains_domains_items`.`itemtype` = '$itemtype'
+                  AND `glpi_plugin_domains_domains_items`.`plugin_domains_domains_id` = '".$domains."' "
+                  . getEntitiesRestrictRequest(" AND ",$table_item,'','',$item->maybeRecursive());
 
-						if ($item->maybeTemplate()) {
-							$query.=" AND `".$table_item."`.`is_template` = '0'";
-						}
-						$query.=" ORDER BY `glpi_entities`.`completename`, `".$table_item."`.`$column`";
+                  if ($item->maybeTemplate()) {
+                     $query.=" AND `".$table_item."`.`is_template` = '0'";
+                  }
+                  $query.=" ORDER BY `glpi_entities`.`completename`, `".$table_item."`.`$column`";
 
-						if ($result_linked=$DB->query($query))
-							if ($DB->numrows($result_linked)) {
-								$item = new $itemtype();
-								while ($data = $DB->fetch_assoc($result_linked)) {
+                  if ($result_linked=$DB->query($query))
+                     if ($DB->numrows($result_linked)) {
+                        $item = new $itemtype();
+                        while ($data = $DB->fetch_assoc($result_linked)) {
                            if ($item->getFromDB($data['id'])) {
                               $out .= $item->getTypeName()." - ".$item->getLink()."<br>";
                            }
-								}
-							} else
-								$out.= ' ';
-						} else
-							$out.=' ';
-				}
-			}
+                        }
+                     } else
+                        $out.= ' ';
+                  } else
+                     $out.=' ';
+            }
+         }
          return $out;
          break;
-	}
-	return "";
+   }
+   return "";
 }
 
 ////// SPECIFIC MODIF MASSIVE FUNCTIONS ///////

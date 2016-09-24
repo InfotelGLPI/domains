@@ -2,28 +2,28 @@
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
- Domains plugin for GLPI
- Copyright (C) 2003-2011 by the Domains Development Team.
+ domains plugin for GLPI
+ Copyright (C) 2009-2016 by the domains Development Team.
 
- https://forge.indepnet.net/projects/domains
+ https://github.com/InfotelGLPI/domains
  -------------------------------------------------------------------------
 
  LICENSE
       
- This file is part of Domains.
+ This file is part of domains.
 
- Domains is free software; you can redistribute it and/or modify
+ domains is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
 
- Domains is distributed in the hope that it will be useful,
+ domains is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Domains. If not, see <http://www.gnu.org/licenses/>.
+ along with domains. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
  
@@ -44,7 +44,8 @@ function plugin_init_domains() {
          'contract_types' => true,
          'ticket_types'         => true,
          'helpdesk_visible_types' => true,
-         'notificationtemplates_types' => true
+         'notificationtemplates_types' => true,
+         'link_types' => true
       ));
       
       Plugin::registerClass('PluginDomainsConfig',
@@ -88,20 +89,20 @@ function plugin_version_domains() {
 
    return array (
       'name' => _n('Domain', 'Domains', 2, 'domains'),
-      'version' => '1.7.0',
+      'version' => '1.8.0',
       'oldname' => 'domain',
       'license' => 'GPLv2+',
       'author'  => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
       'homepage'=>'https://github.com/InfotelGLPI/domains',
-      'minGlpiVersion' => '0.85',// For compatibility / no install in version < 0.80
+      'minGlpiVersion' => '9.1',// For compatibility / no install in version < 9.1
    );
 
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_domains_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '0.85', 'lt') || version_compare(GLPI_VERSION, '0.91', 'ge')) {
-      _e('This plugin requires GLPI >= 0.85', 'domains');
+   if (version_compare(GLPI_VERSION, '9.1', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
+      _e('This plugin requires GLPI >= 9.1', 'domains');
       return false;
    }
    return true;
