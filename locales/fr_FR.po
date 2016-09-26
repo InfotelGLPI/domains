@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Domains Development Team
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Xavier CAILLAUD <tsmr@thetsmr.fr>, 2013,2015
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: GLPI Project - domains plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-26 10:27+0100\n"
-"PO-Revision-Date: 2015-11-26 10:29+0100\n"
+"PO-Revision-Date: 2015-11-26 09:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/tsmr/GLPI_domains/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.6\n"
 
 #: hook.php:369 inc/domain_item.class.php:505
 msgid "Does not expire"
@@ -60,7 +59,7 @@ msgstr "Vide pour infini"
 
 #: inc/domain.class.php:544 inc/notificationtargetdomain.class.php:75
 msgid "Expired or expiring domains"
-msgstr "Domaines expirés ou domaines qui vont expirer"
+msgstr "Domaines expirés ou certificats qui vont expirer"
 
 #: inc/domaintype.class.php:39
 msgid "Domain type"
