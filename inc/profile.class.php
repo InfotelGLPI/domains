@@ -52,6 +52,7 @@ class PluginDomainsProfile extends Profile {
 
          self::addDefaultProfileInfos($ID, 
                                     array('plugin_domains'               => 0,
+                                          'plugin_domains_dropdown'      => 0,
                                           'plugin_domains_open_ticket'   => 0));
          $prof->showForm($ID);
       }
@@ -62,7 +63,8 @@ class PluginDomainsProfile extends Profile {
       //85
       self::addDefaultProfileInfos($ID,
                                     array('plugin_domains'               => ALLSTANDARDRIGHT,
-                                          'plugin_domains_open_ticket'     => 1), true);
+                                          'plugin_domains_dropdown'      => 31,
+                                          'plugin_domains_open_ticket'   => 1), true);
    }
    
     /**
@@ -144,6 +146,15 @@ class PluginDomainsProfile extends Profile {
                 'label'     => _n('Domain', 'Domains', 2, 'domains'),
                 'field'     => 'plugin_domains'
           ),
+          array('itemtype'  => 'PluginDomainsDomain',
+                'label'     => _n('Dropdown', 'Dropdowns', 2),
+                'field'     => 'plugin_domains_dropdown',
+                'rights' => array(CREATE  => __('Create'),
+                                 READ    => __('Read'),
+                                 UPDATE  => __('Update'),
+                                 PURGE   => array('short' => __('Purge'),
+                                                  'long'  => _x('button', 'Delete permanently')))
+          ),
       );
 
       if ($all) {
@@ -192,8 +203,9 @@ class PluginDomainsProfile extends Profile {
       foreach ($DB->request('glpi_plugin_domains_profiles', 
                             "`profiles_id`='$profiles_id'") as $profile_data) {
 
-         $matching = array('domains'    => 'plugin_domains', 
-                           'open_ticket' => 'plugin_domains_open_ticket');
+         $matching       = array('domains'          => 'plugin_domains',
+                                 'domains_dropdown' => 'plugin_domains_dropdown',
+                                 'open_ticket'      => 'plugin_domains_open_ticket');
          $current_rights = ProfileRight::getProfileRights($profiles_id, array_values($matching));
          foreach ($matching as $old => $new) {
             if (!isset($current_rights[$old])) {

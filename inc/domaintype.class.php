@@ -39,7 +39,7 @@ class PluginDomainsDomainType extends CommonDropdown {
       return _n('Domain type', 'Domain types', $nb, 'domains');
    }
    
-   static $rightname = 'plugin_domains';
+   static $rightname = 'plugin_domains_dropdown';
    
    static function transfer($ID, $entity) {
       global $DB;
