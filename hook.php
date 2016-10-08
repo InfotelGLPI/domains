@@ -121,16 +121,14 @@ function plugin_domains_install() {
                         ##ENDFOREACHdomains##&lt;/p&gt;');";
       $result=$DB->query($query);
       
-      $query = "INSERT INTO `glpi_notifications`
-                                   VALUES (NULL, 'Alert Expired Domains', 0, 'PluginDomainsDomain', 'ExpiredDomains',
-                                          'mail',".$itemtype.",
-                                          '', 1, 1, '2010-02-17 22:36:46', '2010-02-17 22:36:46');";
+      $query = "INSERT INTO `glpi_notifications`(`name`, `entities_id`, `itemtype`, `event`, `mode`, `notificationtemplates_id`, `is_recursive`, `is_active`) 
+                                   VALUES ('Alert Expired Domains', 0, 'PluginDomainsDomain', 'ExpiredDomains',
+                                          'mail',".$itemtype.", 1, 1);";
       
       $result=$DB->query($query);
-      $query = "INSERT INTO `glpi_notifications`
-                                   VALUES (NULL, 'Alert Domains Which Expire', 0, 'PluginDomainsDomain', 'DomainsWhichExpire',
-                                          'mail',".$itemtype.",
-                                          '', 1, 1, '2010-02-17 22:36:46', '2010-02-17 22:36:46');";
+      $query = "INSERT INTO `glpi_notifications`(`name`, `entities_id`, `itemtype`, `event`, `mode`, `notificationtemplates_id`, `is_recursive`, `is_active`) 
+                                   VALUES ('Alert Domains Which Expire', 0, 'PluginDomainsDomain', 'DomainsWhichExpire',
+                                          'mail',".$itemtype.", 1, 1);";
 
       $result=$DB->query($query);
    }

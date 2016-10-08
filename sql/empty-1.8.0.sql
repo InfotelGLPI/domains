@@ -70,7 +70,7 @@ CREATE TABLE `glpi_plugin_domains_configs` (
 
 INSERT INTO `glpi_plugin_domains_configs` VALUES (1, '30', '30');
 
-INSERT INTO `glpi_notificationtemplates` VALUES(NULL, 'Alert Domains', 'PluginDomainsDomain', '2010-02-24 21:34:46','',NULL, '2010-02-24 21:34:46');
+INSERT INTO `glpi_notificationtemplates`(`name`, `itemtype`) VALUES('Alert Domains', 'PluginDomainsDomain');
 
 INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginDomainsDomain','2','3','0');
 INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginDomainsDomain','3','1','0');
