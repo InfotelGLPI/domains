@@ -427,7 +427,7 @@ class PluginDomainsDomain extends CommonDBTM {
 
       switch ($ma->getAction()) {
          case 'plugin_domains_add_item':
-            self::dropdownDomain(array());
+            self::dropdownDomains(array());
             echo "&nbsp;" .
             Html::submit(_x('button', 'Post'), array('name' => 'massiveaction'));
             return true;
