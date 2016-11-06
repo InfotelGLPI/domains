@@ -59,7 +59,7 @@ if (!is_readable(GLPI_ROOT . "/plugins/domains/locales/" . $_GET['lang'] . ".php
    print "Unable to read dictionnary file\n";
    exit();
 }
-include (GLPI_ROOT . "/plugins/domains/locales/en_GB.php");
+include(GLPI_ROOT . "/plugins/domains/locales/en_GB.php");
 $REFLANG = $LANG;
 
 $lf = fopen(GLPI_ROOT . "/plugins/domains/locales/" . $_GET['lang'] . ".php", READ);
@@ -77,7 +77,7 @@ fclose($lf);
 fclose($lf_new);
 
 
-include (GLPI_ROOT . "/plugins/domains/locales/temp.php");
+include(GLPI_ROOT . "/plugins/domains/locales/temp.php");
 
 if (!is_readable(GLPI_ROOT . "/plugins/domains/locales/glpi.pot")) {
    print "Unable to read glpi.pot file\n";
@@ -185,7 +185,13 @@ if ($pot && $po) {
 fclose($pot);
 fclose($po);
 
-function search_in_dict($string, $context) {
+/**
+ * @param $string
+ * @param $context
+ * @return string
+ */
+function search_in_dict($string, $context)
+{
    global $REFLANG, $LANG;
 
    if ($context) {
@@ -302,5 +308,3 @@ function search_in_dict($string, $context) {
 
    return "";
 }
-
-?>

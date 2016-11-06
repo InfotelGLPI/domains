@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 if (!isset($_GET["id"]))
    $_GET["id"] = "";
@@ -48,22 +48,22 @@ if (isset($_POST["add"])) {
    $domain->check($_POST['id'], DELETE);
    $domain->delete($_POST);
    $domain->redirectToList();
-   
+
 } else if (isset($_POST["restore"])) {
    $domain->check($_POST['id'], PURGE);
    $domain->restore($_POST);
    $domain->redirectToList();
-   
+
 } else if (isset($_POST["purge"])) {
    $domain->check($_POST['id'], PURGE);
    $domain->delete($_POST, 1);
    $domain->redirectToList();
-   
+
 } else if (isset($_POST["update"])) {
    $domain->check($_POST['id'], UPDATE);
    $domain->update($_POST);
    Html::back();
-   
+
 } else if (isset($_POST["additem"])) {
 
    if (!empty($_POST['itemtype']) && $_POST['items_id'] > 0) {
@@ -71,7 +71,7 @@ if (isset($_POST["add"])) {
       $domain_item->addItem($_POST);
    }
    Html::back();
-   
+
 } else if (isset($_POST["deleteitem"])) {
    foreach ($_POST["item"] as $key => $val) {
       $input = array('id' => $key);
@@ -81,25 +81,24 @@ if (isset($_POST["add"])) {
       }
    }
    Html::back();
-   
+
 } else if (isset($_POST["deletedomains"])) {
    $input = array('id' => $_POST["id"]);
    $domain_item->check($_POST["id"], UPDATE);
    $domain_item->delete($input);
    Html::back();
-   
+
 } else {
 
    $domain->checkGlobal(READ);
 
    $plugin = new Plugin();
-   if ($plugin->isActivated("environment")){
+   if ($plugin->isActivated("environment")) {
       Html::header(PluginDomainsDomain::getTypeName(2), '', "assets", "pluginenvironmentdisplay", "domains");
-   }else{
+   } else {
       Html::header(PluginDomainsDomain::getTypeName(2), '', "assets", "plugindomainsmenu");
    }
    $domain->display($_GET);
 
    Html::footer();
 }
-?>

@@ -27,11 +27,11 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 Session::checkRight("config", UPDATE);
 
-$config=new PluginDomainsConfig();
+$config = new PluginDomainsConfig();
 
 if (isset($_POST["update"])) {
 
@@ -39,5 +39,3 @@ if (isset($_POST["update"])) {
    Html::back();
 
 }
-
-?>

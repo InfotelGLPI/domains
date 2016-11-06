@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -26,35 +27,47 @@
  along with domains. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
- 
-class PluginDomainsMenu extends CommonGLPI {
+
+/**
+ * Class PluginDomainsMenu
+ */
+class PluginDomainsMenu extends CommonGLPI
+{
    static $rightname = 'plugin_domains';
 
-   static function getMenuName() {
+   /**
+    * @return translated
+    */
+   static function getMenuName()
+   {
       return _n('Domain', 'Domains', 2, 'domains');
    }
 
-   static function getMenuContent() {
-      global $CFG_GLPI;
+   /**
+    * @return array
+    */
+   static function getMenuContent()
+   {
 
-      $menu                                           = array();
-      $menu['title']                                  = self::getMenuName();
-      $menu['page']                                   = "/plugins/domains/front/domain.php";
-      $menu['links']['search']                        = PluginDomainsDomain::getSearchURL(false);
+      $menu = array();
+      $menu['title'] = self::getMenuName();
+      $menu['page'] = "/plugins/domains/front/domain.php";
+      $menu['links']['search'] = PluginDomainsDomain::getSearchURL(false);
       if (PluginDomainsDomain::canCreate()) {
-         $menu['links']['add']                        = PluginDomainsDomain::getFormURL(false);
+         $menu['links']['add'] = PluginDomainsDomain::getFormURL(false);
       }
-      
+
 
       return $menu;
    }
 
-   static function removeRightsFromSession() {
+   static function removeRightsFromSession()
+   {
       if (isset($_SESSION['glpimenu']['assets']['types']['PluginDomainsMenu'])) {
-         unset($_SESSION['glpimenu']['assets']['types']['PluginDomainsMenu']); 
+         unset($_SESSION['glpimenu']['assets']['types']['PluginDomainsMenu']);
       }
       if (isset($_SESSION['glpimenu']['assets']['content']['plugindomainsmenu'])) {
-         unset($_SESSION['glpimenu']['assets']['content']['plugindomainsmenu']); 
+         unset($_SESSION['glpimenu']['assets']['content']['plugindomainsmenu']);
       }
    }
 }

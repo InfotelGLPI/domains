@@ -27,32 +27,44 @@
  --------------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')){
+if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
 // Class NotificationTarget
-class PluginDomainsNotificationTargetDomain extends NotificationTarget {
+/**
+ * Class PluginDomainsNotificationTargetDomain
+ */
+class PluginDomainsNotificationTargetDomain extends NotificationTarget
+{
 
-   function getEvents() {
-      return array ('ExpiredDomains' => __('Expired domains', 'domains'),
-                     'DomainsWhichExpire' => __('Expiring domains', 'domains'));
+   /**
+    * @return array
+    */
+   function getEvents()
+   {
+      return array('ExpiredDomains' => __('Expired domains', 'domains'),
+         'DomainsWhichExpire' => __('Expiring domains', 'domains'));
    }
-   
-   function getDatasForTemplate($event,$options=array()) {
-      global $CFG_GLPI;
-         
+
+   /**
+    * @param $event
+    * @param array $options
+    */
+   function getDatasForTemplate($event, $options = array())
+   {
+
       $this->datas['##domain.entity##'] =
-                        Dropdown::getDropdownName('glpi_entities',
-                                                  $options['entities_id']);
+         Dropdown::getDropdownName('glpi_entities',
+            $options['entities_id']);
       $this->datas['##lang.domain.entity##'] = __('Entity');
-      $this->datas['##domain.action##'] = ($event=="ExpiredDomains"?__('Expired domains', 'domains'):
-                                                         __('Expiring domains', 'domains'));
-      
+      $this->datas['##domain.action##'] = ($event == "ExpiredDomains" ? __('Expired domains', 'domains') :
+         __('Expiring domains', 'domains'));
+
       $this->datas['##lang.domain.name##'] = __('Name');
       $this->datas['##lang.domain.dateexpiration##'] = __('Expiration date');
 
-      foreach($options['domains'] as $id => $domain) {
+      foreach ($options['domains'] as $id => $domain) {
          $tmp = array();
 
          $tmp['##domain.name##'] = $domain['name'];
@@ -61,24 +73,26 @@ class PluginDomainsNotificationTargetDomain extends NotificationTarget {
          $this->datas['domains'][] = $tmp;
       }
    }
-   
-   function getTags() {
 
-      $tags = array('domain.name'            => __('Name'),
-                     'domain.dateexpiration'    => __('Expiration date'));
+   /**
+    *
+    */
+   function getTags()
+   {
+
+      $tags = array('domain.name' => __('Name'),
+         'domain.dateexpiration' => __('Expiration date'));
       foreach ($tags as $tag => $label) {
-         $this->addTagToList(array('tag'=>$tag,'label'=>$label,
-                                   'value'=>true));
+         $this->addTagToList(array('tag' => $tag, 'label' => $label,
+            'value' => true));
       }
-      
-      $this->addTagToList(array('tag'=>'domains',
-                                'label'=>__('Expired or expiring domains', 'domains'),
-                                'value'=>false,
-                                'foreach'=>true,
-                                'events'=>array('DomainsWhichExpire','ExpiredDomains')));
+
+      $this->addTagToList(array('tag' => 'domains',
+         'label' => __('Expired or expiring domains', 'domains'),
+         'value' => false,
+         'foreach' => true,
+         'events' => array('DomainsWhichExpire', 'ExpiredDomains')));
 
       asort($this->tag_descriptions);
    }
 }
-
-?>

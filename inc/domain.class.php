@@ -31,7 +31,11 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginDomainsDomain extends CommonDBTM {
+/**
+ * Class PluginDomainsDomain
+ */
+class PluginDomainsDomain extends CommonDBTM
+{
 
    public $dohistory = true;
    static $rightname = 'plugin_domains';
@@ -40,13 +44,24 @@ class PluginDomainsDomain extends CommonDBTM {
    static $types = array('Computer', 'Monitor', 'NetworkEquipment', 'Peripheral',
       'Phone', 'Printer', 'Software');
    static $tags = '[DOMAIN_NAME]';
-   
-   static function getTypeName($nb = 0) {
+
+   /**
+    * @param int $nb
+    * @return translated
+    */
+   static function getTypeName($nb = 0)
+   {
 
       return _n('Domain', 'Domains', $nb, 'domains');
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
+   /**
+    * @param CommonGLPI $item
+    * @param int $withtemplate
+    * @return array|string|translated
+    */
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+   {
 
       if ($item->getType() == 'Supplier') {
          if ($_SESSION['glpishow_count_on_tabs']) {
@@ -57,8 +72,14 @@ class PluginDomainsDomain extends CommonDBTM {
       return '';
    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      global $CFG_GLPI;
+   /**
+    * @param CommonGLPI $item
+    * @param int $tabnum
+    * @param int $withtemplate
+    * @return bool
+    */
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+   {
 
       if ($item->getType() == 'Supplier') {
          self::showForSupplier($item);
@@ -66,18 +87,31 @@ class PluginDomainsDomain extends CommonDBTM {
       return true;
    }
 
-   static function countForItem(CommonDBTM $item) {
+   /**
+    * @param CommonDBTM $item
+    * @return int
+    */
+   static function countForItem(CommonDBTM $item)
+   {
 
       return countElementsInTable('glpi_plugin_domains_domains', "`suppliers_id` = '" . $item->getID() . "'");
    }
 
-   function cleanDBonPurge() {
+   /**
+    *
+    */
+   function cleanDBonPurge()
+   {
 
       $temp = new PluginDomainsDomain_Item();
       $temp->deleteByCriteria(array('plugin_domains_domains_id' => $this->fields['id']));
    }
 
-   function getSearchOptions() {
+   /**
+    * @return array
+    */
+   function getSearchOptions()
+   {
 
       $tab = array();
 
@@ -167,15 +201,20 @@ class PluginDomainsDomain extends CommonDBTM {
       $tab[80]['field'] = 'completename';
       $tab[80]['name'] = __('Entity');
       $tab[80]['datatype'] = 'dropdown';
-      
-      $tab[81]['table']       = 'glpi_entities';
-      $tab[81]['field']       = 'entities_id';
-      $tab[81]['name']        = __('Entity')."-".__('ID');
-      
+
+      $tab[81]['table'] = 'glpi_entities';
+      $tab[81]['field'] = 'entities_id';
+      $tab[81]['name'] = __('Entity') . "-" . __('ID');
+
       return $tab;
    }
 
-   function defineTabs($options = array()) {
+   /**
+    * @param array $options
+    * @return array
+    */
+   function defineTabs($options = array())
+   {
 
       $ong = array();
       $this->addDefaultFormTab($ong);
@@ -191,7 +230,12 @@ class PluginDomainsDomain extends CommonDBTM {
       return $ong;
    }
 
-   function prepareInputForAdd($input) {
+   /**
+    * @param datas $input
+    * @return datas
+    */
+   function prepareInputForAdd($input)
+   {
 
       if (isset($input['date_creation']) && empty($input['date_creation']))
          $input['date_creation'] = 'NULL';
@@ -201,7 +245,12 @@ class PluginDomainsDomain extends CommonDBTM {
       return $input;
    }
 
-   function prepareInputForUpdate($input) {
+   /**
+    * @param datas $input
+    * @return datas
+    */
+   function prepareInputForUpdate($input)
+   {
 
       if (isset($input['date_creation']) && empty($input['date_creation']))
          $input['date_creation'] = 'NULL';
@@ -217,14 +266,23 @@ class PluginDomainsDomain extends CommonDBTM {
     * @return a SQL command which return a set of (itemtype, items_id)
     */
 
-   function getSelectLinkedItem() {
+   /**
+    * @return string
+    */
+   function getSelectLinkedItem()
+   {
       return "SELECT `itemtype`, `items_id`
               FROM `glpi_plugin_domains_domains_items`
               WHERE `plugin_domains_domains_id`='" . $this->fields['id'] . "'";
    }
 
-   function showForm($ID, $options = array()) {
-      global $CFG_GLPI;
+   /**
+    * @param $ID
+    * @param array $options
+    * @return bool
+    */
+   function showForm($ID, $options = array())
+   {
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
@@ -335,7 +393,8 @@ class PluginDomainsDomain extends CommonDBTM {
     *
     * @return nothing (print out an HTML select box)
     * */
-   static function dropdownDomains($options = array()) {
+   static function dropdownDomains($options = array())
+   {
 
       global $DB, $CFG_GLPI;
 
@@ -353,7 +412,7 @@ class PluginDomainsDomain extends CommonDBTM {
       $rand = mt_rand();
 
       $where = " WHERE `glpi_plugin_domains_domains`.`is_deleted` = '0' ";
-      $where.=getEntitiesRestrictRequest("AND", 'glpi_plugin_domains_domains', '', $p['entity'], true);
+      $where .= getEntitiesRestrictRequest("AND", 'glpi_plugin_domains_domains', '', $p['entity'], true);
 
       if (count($p['used'])) {
          $where .= " AND `id` NOT IN (0, " . implode(",", $p['used']) . ")";
@@ -374,8 +433,8 @@ class PluginDomainsDomain extends CommonDBTM {
       }
 
       $out = Dropdown::showFromArray('_domaintype', $values, array('width' => '30%',
-            'rand' => $rand,
-            'display' => false));
+         'rand' => $rand,
+         'display' => false));
       $field_id = Html::cleanId("dropdown__domaintype$rand");
 
       $params = array('domaintypes' => '__VALUE__',
@@ -400,7 +459,12 @@ class PluginDomainsDomain extends CommonDBTM {
    }
 
    //Massive action
-   function getSpecificMassiveActions($checkitem = NULL) {
+   /**
+    * @param null $checkitem
+    * @return an
+    */
+   function getSpecificMassiveActions($checkitem = NULL)
+   {
       $isadmin = static::canUpdate();
       $actions = parent::getSpecificMassiveActions($checkitem);
 
@@ -422,22 +486,35 @@ class PluginDomainsDomain extends CommonDBTM {
     * @since version 0.85
     *
     * @see CommonDBTM::showMassiveActionsSubForm()
-    * */
-   static function showMassiveActionsSubForm(MassiveAction $ma) {
+    * @param MassiveAction $ma
+    * @return bool|false
+    */
+   static function showMassiveActionsSubForm(MassiveAction $ma)
+   {
 
       switch ($ma->getAction()) {
          case 'plugin_domains_add_item':
             self::dropdownDomains(array());
             echo "&nbsp;" .
-            Html::submit(_x('button', 'Post'), array('name' => 'massiveaction'));
+               Html::submit(_x('button', 'Post'), array('name' => 'massiveaction'));
             return true;
          case "install" :
-            Dropdown::showAllItems("item_item", 0, 0, -1, self::getTypes(true), false, false, 'typeitem');
+            Dropdown::showSelectItemFromItemtypes(array('items_id_name' => 'item_item',
+               'itemtype_name' => 'typeitem',
+               'itemtypes' => self::getTypes(true),
+               'checkright'
+               => true,
+            ));
             echo Html::submit(_x('button', 'Post'), array('name' => 'massiveaction'));
             return true;
             break;
          case "uninstall" :
-            Dropdown::showAllItems("item_item", 0, 0, -1, self::getTypes(true), false, false, 'typeitem');
+            Dropdown::showSelectItemFromItemtypes(array('items_id_name' => 'item_item',
+               'itemtype_name' => 'typeitem',
+               'itemtypes' => self::getTypes(true),
+               'checkright'
+               => true,
+            ));
             echo Html::submit(_x('button', 'Post'), array('name' => 'massiveaction'));
             return true;
             break;
@@ -454,9 +531,13 @@ class PluginDomainsDomain extends CommonDBTM {
     * @since version 0.85
     *
     * @see CommonDBTM::processMassiveActionsForOneItemtype()
-    * */
-   static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) {
-      global $DB;
+    * @param MassiveAction $ma
+    * @param CommonDBTM $item
+    * @param array $ids
+    * @return nothing|void
+    */
+   static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids)
+   {
 
       $domain_item = new PluginDomainsDomain_Item();
 
@@ -467,8 +548,8 @@ class PluginDomainsDomain extends CommonDBTM {
                $input = array('plugin_domains_domains_id' => $input['plugin_domains_domains_id'],
                   'items_id' => $id,
                   'itemtype' => $item->getType());
-               if ($certif_item->can(-1, UPDATE, $input)) {
-                  if ($certif_item->add($input)) {
+               if ($domain_item->can(-1, UPDATE, $input)) {
+                  if ($domain_item->add($input)) {
                      $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                   } else {
                      $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_KO);
@@ -510,7 +591,7 @@ class PluginDomainsDomain extends CommonDBTM {
                   $values = array('plugin_domains_domains_id' => $key,
                      'items_id' => $input["item_item"],
                      'itemtype' => $input['typeitem']);
-                  if ($certif_item->add($values)) {
+                  if ($domain_item->add($values)) {
                      $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                   } else {
                      $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
@@ -525,12 +606,10 @@ class PluginDomainsDomain extends CommonDBTM {
          case 'uninstall':
             $input = $ma->getInput();
             foreach ($ids as $key) {
-               if ($val == 1) {
-                  if ($certif_item->deleteItemByDomainsAndItem($key, $input['item_item'], $input['typeitem'])) {
-                     $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
-                  } else {
-                     $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
-                  }
+               if ($domain_item->deleteItemByDomainsAndItem($key, $input['item_item'], $input['typeitem'])) {
+                  $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
+               } else {
+                  $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
                }
             }
             return;
@@ -539,7 +618,12 @@ class PluginDomainsDomain extends CommonDBTM {
    }
 
    // Cron action
-   static function cronInfo($name) {
+   /**
+    * @param $name
+    * @return array
+    */
+   static function cronInfo($name)
+   {
 
       switch ($name) {
          case 'DomainsAlert':
@@ -550,8 +634,11 @@ class PluginDomainsDomain extends CommonDBTM {
       return array();
    }
 
-   static function queryExpiredDomains() {
-      global $DB;
+   /**
+    * @return string
+    */
+   static function queryExpiredDomains()
+   {
 
       $config = new PluginDomainsConfig();
 
@@ -568,8 +655,11 @@ class PluginDomainsDomain extends CommonDBTM {
       return $query;
    }
 
-   static function queryDomainsWhichExpire() {
-      global $DB;
+   /**
+    * @return string
+    */
+   static function queryDomainsWhichExpire()
+   {
 
       $config = new PluginDomainsConfig();
       $config->getFromDB('1');
@@ -590,8 +680,11 @@ class PluginDomainsDomain extends CommonDBTM {
     *
     * @param $task for log, if NULL display
     *
-    * */
-   static function cronDomainsAlert($task = NULL) {
+    *
+    * @return int
+    */
+   static function cronDomainsAlert($task = NULL)
+   {
       global $DB, $CFG_GLPI;
 
       if (!$CFG_GLPI["use_mailing"]) {
@@ -604,8 +697,8 @@ class PluginDomainsDomain extends CommonDBTM {
       $query_expired = self::queryExpiredDomains();
       $query_whichexpire = self::queryDomainsWhichExpire();
 
-      $querys = array(Alert::NOTICE=>$query_whichexpire, Alert::END=>$query_expired);
-      
+      $querys = array(Alert::NOTICE => $query_whichexpire, Alert::END => $query_expired);
+
       $domain_infos = array();
       $domain_messages = array();
 
@@ -614,7 +707,7 @@ class PluginDomainsDomain extends CommonDBTM {
          foreach ($DB->request($query) as $data) {
             $entity = $data['entities_id'];
             $message = $data["name"] . ": " .
-               Html::convdate($data["date_expiration"]) . "<br>\n";
+               Html::convDate($data["date_expiration"]) . "<br>\n";
             $domain_infos[$type][$entity][] = $data;
 
             if (!isset($domains_infos[$type][$entity])) {
@@ -629,24 +722,25 @@ class PluginDomainsDomain extends CommonDBTM {
          foreach ($domain_infos[$type] as $entity => $domains) {
             Plugin::loadLang('domains');
 
-            if (NotificationEvent::raiseEvent(($type==Alert::NOTICE?"DomainsWhichExpire":"ExpiredDomains"),
-                                              new PluginDomainsDomain(),
-                                              array('entities_id'=>$entity,
-                                                    'domains'=>$domains))) {
+            if (NotificationEvent::raiseEvent(($type == Alert::NOTICE ? "DomainsWhichExpire" : "ExpiredDomains"),
+               new PluginDomainsDomain(),
+               array('entities_id' => $entity,
+                  'domains' => $domains))
+            ) {
                $message = $domain_messages[$type][$entity];
                $cron_status = 1;
                if ($task) {
                   $task->log(Dropdown::getDropdownName("glpi_entities", $entity) . ":  $message\n");
                   $task->addVolume(1);
                } else {
-                  addMessageAfterRedirect(Dropdown::getDropdownName("glpi_entities", $entity) . ":  $message");
+                  Toolbox::addMessageAfterRedirect(Dropdown::getDropdownName("glpi_entities", $entity) . ":  $message");
                }
             } else {
                if ($task) {
                   $task->log(Dropdown::getDropdownName("glpi_entities", $entity) .
                      ":  Send domains alert failed\n");
                } else {
-                  addMessageAfterRedirect(Dropdown::getDropdownName("glpi_entities", $entity) .
+                  Toolbox::addMessageAfterRedirect(Dropdown::getDropdownName("glpi_entities", $entity) .
                      ":  Send domains alert failed", false, ERROR);
                }
             }
@@ -656,7 +750,11 @@ class PluginDomainsDomain extends CommonDBTM {
       return $cron_status;
    }
 
-   static function configCron($target) {
+   /**
+    * @param $target
+    */
+   static function configCron($target)
+   {
 
       $config = new PluginDomainsConfig();
 
@@ -670,7 +768,8 @@ class PluginDomainsDomain extends CommonDBTM {
     *
     * @param $type string class name
     * */
-   static function registerType($type) {
+   static function registerType($type)
+   {
       if (!in_array($type, self::$types)) {
          self::$types[] = $type;
       }
@@ -683,7 +782,8 @@ class PluginDomainsDomain extends CommonDBTM {
     *
     * @return array of types
     * */
-   static function getTypes($all = false) {
+   static function getTypes($all = false)
+   {
 
       if ($all) {
          return self::$types;
@@ -704,16 +804,19 @@ class PluginDomainsDomain extends CommonDBTM {
       }
       return $types;
    }
-   
-    /**
+
+   /**
     * Show domains associated to a supplier
     *
     * @since version 0.84
     *
     * @param $item            CommonDBTM object for which associated domains must be displayed
-    * @param $withtemplate    (default '')
-   **/
-   static function showForSupplier(CommonDBTM $item, $withtemplate='') {
+    * @param $withtemplate (default '')
+    *
+    * @return bool
+    */
+   static function showForSupplier(CommonDBTM $item, $withtemplate = '')
+   {
       global $DB, $CFG_GLPI;
 
       $ID = $item->getField('id');
@@ -725,34 +828,32 @@ class PluginDomainsDomain extends CommonDBTM {
          return false;
       }
 
-      if (!$item->can($item->fields['id'],READ)) {
+      if (!$item->can($item->fields['id'], READ)) {
          return false;
       }
 
       if (empty($withtemplate)) {
          $withtemplate = 0;
-      }$withtemplate = 0;
+      }
+      $withtemplate = 0;
 
-      $rand          = mt_rand();
-      $is_recursive  = $item->isRecursive();
-      
       $query = "SELECT `glpi_plugin_domains_domains`.`id` AS assocID,
                        `glpi_entities`.`id` AS entity,
                        `glpi_plugin_domains_domains`.`name` AS assocName,
                        `glpi_plugin_domains_domains`.* "
-        ."FROM `glpi_plugin_domains_domains` "
-        ." LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `glpi_plugin_domains_domains`.`entities_id`) "
-        ." WHERE `suppliers_id` = '$ID' "
-        . getEntitiesRestrictRequest(" AND ","glpi_plugin_domains_domains",'','',true);
-      $query.= " ORDER BY `assocName` ";
+         . "FROM `glpi_plugin_domains_domains` "
+         . " LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `glpi_plugin_domains_domains`.`entities_id`) "
+         . " WHERE `suppliers_id` = '$ID' "
+         . getEntitiesRestrictRequest(" AND ", "glpi_plugin_domains_domains", '', '', true);
+      $query .= " ORDER BY `assocName` ";
 
       $result = $DB->query($query);
       $number = $DB->numrows($result);
-      $i      = 0;
+      $i = 0;
 
-      $domains       = array();
-      $domain        = new PluginDomainsDomain();
-      $used          = array();
+      $domains = array();
+      $domain = new PluginDomainsDomain();
+      $used = array();
       if ($numrows = $DB->numrows($result)) {
          while ($data = $DB->fetch_assoc($result)) {
             $domains[$data['assocID']] = $data;
@@ -764,64 +865,64 @@ class PluginDomainsDomain extends CommonDBTM {
       echo "<table class='tab_cadre_fixe'>";
 
       echo "<tr>";
-      echo "<th>".__('Name')."</th>";
+      echo "<th>" . __('Name') . "</th>";
       if (Session::isMultiEntitiesMode()) {
-         echo "<th>".__('Entity')."</th>";
+         echo "<th>" . __('Entity') . "</th>";
       }
-      echo "<th>".__('Group in charge of the hardware')."</th>";
-      echo "<th>".__('Supplier')."</th>";
-      echo "<th>".__('Technician in charge of the hardware')."</th>";
-      echo "<th>".__('Type')."</th>";
-      echo "<th>".__('Creation date')."</th>";
-      echo "<th>".__('Expiration date')."</th>";
+      echo "<th>" . __('Group in charge of the hardware') . "</th>";
+      echo "<th>" . __('Supplier') . "</th>";
+      echo "<th>" . __('Technician in charge of the hardware') . "</th>";
+      echo "<th>" . __('Type') . "</th>";
+      echo "<th>" . __('Creation date') . "</th>";
+      echo "<th>" . __('Expiration date') . "</th>";
       echo "</tr>";
       $used = array();
 
       if ($number) {
 
          Session::initNavigateListItems('PluginDomainsDomain',
-                           //TRANS : %1$s is the itemtype name,
-                           //        %2$s is the name of the item (used for headings of a list)
-                                        sprintf(__('%1$s = %2$s'),
-                                                $item->getTypeName(1), $item->getName()));
+            //TRANS : %1$s is the itemtype name,
+            //        %2$s is the name of the item (used for headings of a list)
+            sprintf(__('%1$s = %2$s'),
+               $item->getTypeName(1), $item->getName()));
 
-         
-         foreach  ($domains as $data) {
-            $domainID   = $data["id"];
-            $link       = NOT_AVAILABLE;
+
+         foreach ($domains as $data) {
+            $domainID = $data["id"];
+            $link = NOT_AVAILABLE;
 
             if ($domain->getFromDB($domainID)) {
-               $link    = $domain->getLink();
+               $link = $domain->getLink();
             }
 
             Session::addToNavigateListItems('PluginDomainsDomain', $domainID);
-            
-            $used[$domainID] = $domainID;
-            $assocID      = $data["assocID"];
 
-            echo "<tr class='tab_bg_1".($data["is_deleted"]?"_2":"")."'>";
+            $used[$domainID] = $domainID;
+
+            echo "<tr class='tab_bg_1" . ($data["is_deleted"] ? "_2" : "") . "'>";
             echo "<td class='center'>$link</td>";
             if (Session::isMultiEntitiesMode()) {
-               echo "<td class='center'>".Dropdown::getDropdownName("glpi_entities", $data['entities_id']).
-                    "</td>";
+               echo "<td class='center'>" . Dropdown::getDropdownName("glpi_entities", $data['entities_id']) .
+                  "</td>";
             }
-            echo "<td class='center'>".Dropdown::getDropdownName("glpi_groups",$data["groups_id_tech"])."</td>";
+            echo "<td class='center'>" . Dropdown::getDropdownName("glpi_groups", $data["groups_id_tech"]) . "</td>";
             echo "<td>";
-            echo "<a href=\"".$CFG_GLPI["root_doc"]."/front/enterprise.form.php?ID=".$data["suppliers_id"]."\">";
-            echo Dropdown::getDropdownName("glpi_suppliers",$data["suppliers_id"]);
-            if ($_SESSION["glpiis_ids_visible"] == 1 )
-               echo " (".$data["suppliers_id"].")";
+            echo "<a href=\"" . $CFG_GLPI["root_doc"] . "/front/enterprise.form.php?ID=" . $data["suppliers_id"] . "\">";
+            echo Dropdown::getDropdownName("glpi_suppliers", $data["suppliers_id"]);
+            if ($_SESSION["glpiis_ids_visible"] == 1)
+               echo " (" . $data["suppliers_id"] . ")";
             echo "</a></td>";
-            echo "<td class='center'>".getUsername($data["users_id_tech"])."</td>";
-            echo "<td class='center'>".Dropdown::getDropdownName("glpi_plugin_domains_domaintypes",$data["plugin_domains_domaintypes_id"])."</td>";
-            echo "<td class='center'>".Html::convdate($data["date_creation"])."</td>";
-            if ($data["date_expiration"] <= date('Y-m-d') 
-                  && !empty($data["date_expiration"])) {
-               echo "<td class='center'><div class='deleted'>".convdate($data["date_expiration"])."</div></td>";
+            echo "<td class='center'>" . getUserName($data["users_id_tech"]) . "</td>";
+            echo "<td class='center'>" . Dropdown::getDropdownName("glpi_plugin_domains_domaintypes", $data["plugin_domains_domaintypes_id"]) . "</td>";
+            echo "<td class='center'>" . Html::convDate($data["date_creation"]) . "</td>";
+            if ($data["date_expiration"] <= date('Y-m-d')
+               && !empty($data["date_expiration"])
+            ) {
+               echo "<td class='center'><div class='deleted'>" . Html::convDate($data["date_expiration"]) . "</div></td>";
             } else if (empty($data["date_expiration"])) {
-               echo "<td class='center'>".__('Does not expire', 'domains')."</td>";
+               echo "<td class='center'>" . __('Does not expire', 'domains') . "</td>";
             } else {
-               echo "<td class='center'>".Html::convdate($data["date_expiration"])."</td>";
+               echo "<td class='center'>" . Html::convDate($data["date_expiration"]) . "</td>";
             }
             echo "</tr>";
             $i++;
@@ -832,17 +933,21 @@ class PluginDomainsDomain extends CommonDBTM {
       echo "</table>";
       echo "</div>";
    }
-   
-   static function generateLinkContents($link, CommonDBTM $item) {
 
-      if (strstr($link,"[DOMAIN_NAME]")) {
-         $link = str_replace("[DOMAIN_NAME]", $item->getName(),$link);
+   /**
+    * @param string $link
+    * @param CommonDBTM $item
+    * @return array
+    */
+   static function generateLinkContents($link, CommonDBTM $item)
+   {
+
+      if (strstr($link, "[DOMAIN_NAME]")) {
+         $link = str_replace("[DOMAIN_NAME]", $item->getName(), $link);
          return array($link);
       }
 
       return parent::generateLinkContents($link, $item);
    }
-   
-}
 
-?>
+}
