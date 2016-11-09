@@ -710,7 +710,7 @@ class PluginDomainsDomain extends CommonDBTM
                Html::convDate($data["date_expiration"]) . "<br>\n";
             $domain_infos[$type][$entity][] = $data;
 
-            if (!isset($domains_infos[$type][$entity])) {
+            if (!isset($domain_messages[$type][$entity])) {
                $domain_messages[$type][$entity] = __('Domains expired since more', 'domains') . "<br />";
             }
             $domain_messages[$type][$entity] .= $message;
