@@ -299,7 +299,7 @@ function plugin_domains_getDatabaseRelations()
       return array("glpi_plugin_domains_domaintypes" => array("glpi_plugin_domains_domains" => "plugin_domains_domaintypes_id"),
          "glpi_users" => array("glpi_plugin_domains_domains" => "users_id_tech"),
          "glpi_groups" => array("glpi_plugin_domains_domains" => "groups_id_tech"),
-         "glpi_suppliers" => array("glpi_plugin_domains_domains" => "glpi_suppliers"),
+         "glpi_suppliers" => array("glpi_plugin_domains_domains" => "suppliers_id"),
          "glpi_plugin_domains_domains" => array("glpi_plugin_domains_domains_items" => "plugin_domains_domains_id"),
          "glpi_entities" => array("glpi_plugin_domains_domains" => "entities_id",
             "glpi_plugin_domains_domaintypes" => "entities_id"));

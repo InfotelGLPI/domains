@@ -95,7 +95,7 @@ function plugin_version_domains()
 
    return array(
       'name' => _n('Domain', 'Domains', 2, 'domains'),
-      'version' => '1.8.0',
+      'version' => '1.8.1',
       'oldname' => 'domain',
       'license' => 'GPLv2+',
       'author' => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
