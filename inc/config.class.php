@@ -92,11 +92,11 @@ class PluginDomainsConfig extends CommonDBTM
       $date_next = date("Y-m-d", $delay_stamp_next);
 
       echo "<tr class='tab_bg_1'><td><div align='left'>";
-      _e('Domains expired since more', 'domains');
+      echo __('Domains expired since more', 'domains');
       echo "&nbsp;<input type='text' size='5' name='delay_expired' value=\"$delay_expired\">";
       echo "&nbsp;" . _n('Day', 'Days', 2);
       echo "&nbsp;( >" . Html::convDate($date_first) . ")<br>";
-      _e('Domains expiring in less than', 'domains');
+      echo __('Domains expiring in less than', 'domains');
       echo "&nbsp;<input type='text' size='5' name='delay_whichexpire' value=\"$delay_whichexpire\">";
       echo "&nbsp;" . _n('Day', 'Days', 2);
       echo "&nbsp;( <" . Html::convDate($date_next) . ")";

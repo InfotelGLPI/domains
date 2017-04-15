@@ -112,7 +112,7 @@ function plugin_version_domains()
 function plugin_domains_check_prerequisites()
 {
    if (version_compare(GLPI_VERSION, '9.1', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
-      _e('This plugin requires GLPI >= 9.1', 'domains');
+      echo __('This plugin requires GLPI >= 9.1', 'domains');
       return false;
    }
    return true;
