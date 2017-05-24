@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Kaya Zeren <kayazeren@gmail.com>, 2013,2015
-# Xavier CAILLAUD <tsmr@thetsmr.fr>, 2013
+# Kaya Zeren <kayazeren@gmail.com>, 2013,2015,2017
+# Xavier CAILLAUD <thetsmr@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - domains plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-26 10:27+0100\n"
-"PO-Revision-Date: 2015-11-27 15:03+0000\n"
+"PO-Revision-Date: 2017-01-03 23:58+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/tsmr/GLPI_domains/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr "Süresi geçmiş ya da geçen etki alanları"
 #: inc/domaintype.class.php:39
 msgid "Domain type"
 msgid_plural "Domain types"
-msgstr[0] "Etki alanı tipleri"
+msgstr[0] "Etki alanı türleri"
 
 #: inc/notificationtargetdomain.class.php:38
 #: inc/notificationtargetdomain.class.php:49
