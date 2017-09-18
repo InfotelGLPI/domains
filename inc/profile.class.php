@@ -33,18 +33,17 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class PluginDomainsProfile
  */
-class PluginDomainsProfile extends Profile
-{
+class PluginDomainsProfile extends Profile {
 
    static $rightname = "profile";
 
    /**
     * @param CommonGLPI $item
-    * @param int $withtemplate
+    * @param int        $withtemplate
+    *
     * @return string|translated
     */
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
-   {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       if ($item->getType() == 'Profile') {
          return PluginDomainsDomain::getTypeName(2);
@@ -55,21 +54,21 @@ class PluginDomainsProfile extends Profile
 
    /**
     * @param CommonGLPI $item
-    * @param int $tabnum
-    * @param int $withtemplate
+    * @param int        $tabnum
+    * @param int        $withtemplate
+    *
     * @return bool
     */
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
-   {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       if ($item->getType() == 'Profile') {
-         $ID = $item->getID();
+         $ID   = $item->getID();
          $prof = new self();
 
          self::addDefaultProfileInfos($ID,
-            array('plugin_domains' => 0,
-               'plugin_domains_dropdown' => 0,
-               'plugin_domains_open_ticket' => 0));
+                                      array('plugin_domains'             => 0,
+                                            'plugin_domains_dropdown'    => 0,
+                                            'plugin_domains_open_ticket' => 0));
          $prof->showForm($ID);
       }
       return true;
@@ -78,37 +77,34 @@ class PluginDomainsProfile extends Profile
    /**
     * @param $ID
     */
-   static function createFirstAccess($ID)
-   {
+   static function createFirstAccess($ID) {
       //85
       self::addDefaultProfileInfos($ID,
-         array('plugin_domains' => ALLSTANDARDRIGHT,
-            'plugin_domains_dropdown' => 31,
-            'plugin_domains_open_ticket' => 1), true);
+                                   array('plugin_domains'             => ALLSTANDARDRIGHT,
+                                         'plugin_domains_dropdown'    => 31,
+                                         'plugin_domains_open_ticket' => 1), true);
    }
 
    /**
-    * @param $profiles_id
-    * @param $rights
+    * @param      $profiles_id
+    * @param      $rights
     * @param bool $drop_existing
+    *
     * @internal param $profile
     */
-   static function addDefaultProfileInfos($profiles_id, $rights, $drop_existing = false)
-   {
+   static function addDefaultProfileInfos($profiles_id, $rights, $drop_existing = false) {
 
       $profileRight = new ProfileRight();
       foreach ($rights as $right => $value) {
          if (countElementsInTable('glpi_profilerights',
-               "`profiles_id`='$profiles_id' AND `name`='$right'") && $drop_existing
-         ) {
+                                  "`profiles_id`='$profiles_id' AND `name`='$right'") && $drop_existing) {
             $profileRight->deleteByCriteria(array('profiles_id' => $profiles_id, 'name' => $right));
          }
          if (!countElementsInTable('glpi_profilerights',
-            "`profiles_id`='$profiles_id' AND `name`='$right'")
-         ) {
+                                   "`profiles_id`='$profiles_id' AND `name`='$right'")) {
             $myright['profiles_id'] = $profiles_id;
-            $myright['name'] = $right;
-            $myright['rights'] = $value;
+            $myright['name']        = $right;
+            $myright['rights']      = $value;
             $profileRight->add($myright);
 
             //Add right to the current session
@@ -120,20 +116,19 @@ class PluginDomainsProfile extends Profile
    /**
     * Show profile form
     *
-    * @param int $profiles_id
+    * @param int  $profiles_id
     * @param bool $openform
     * @param bool $closeform
+    *
     * @return nothing
     * @internal param int $items_id id of the profile
     * @internal param value $target url of target
     */
-   function showForm($profiles_id = 0, $openform = TRUE, $closeform = TRUE)
-   {
+   function showForm($profiles_id = 0, $openform = TRUE, $closeform = TRUE) {
 
       echo "<div class='firstbloc'>";
       if (($canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE)))
-         && $openform
-      ) {
+          && $openform) {
          $profile = new Profile();
          echo "<form method='post' action='" . $profile->getFormURL() . "'>";
       }
@@ -142,9 +137,9 @@ class PluginDomainsProfile extends Profile
       $profile->getFromDB($profiles_id);
       if ($profile->getField('interface') == 'central') {
          $rights = $this->getAllRights();
-         $profile->displayRightsChoiceMatrix($rights, array('canedit' => $canedit,
-            'default_class' => 'tab_bg_2',
-            'title' => __('General')));
+         $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
+                                                            'default_class' => 'tab_bg_2',
+                                                            'title'         => __('General')));
       }
       echo "<table class='tab_cadre_fixehov'>";
       echo "<tr class='tab_bg_1'><th colspan='4'>" . __('Helpdesk') . "</th></tr>\n";
@@ -153,14 +148,13 @@ class PluginDomainsProfile extends Profile
       echo "<tr class='tab_bg_2'>";
       echo "<td width='20%'>" . __('Associable items to a ticket') . "</td>";
       echo "<td colspan='5'>";
-      Html::showCheckbox(array('name' => '_plugin_domains_open_ticket',
-         'checked' => $effective_rights['plugin_domains_open_ticket']));
+      Html::showCheckbox(array('name'    => '_plugin_domains_open_ticket',
+                               'checked' => $effective_rights['plugin_domains_open_ticket']));
       echo "</td></tr>\n";
       echo "</table>";
 
       if ($canedit
-         && $closeform
-      ) {
+          && $closeform) {
          echo "<div class='center'>";
          echo Html::hidden('id', array('value' => $profiles_id));
          echo Html::submit(_sx('button', 'Save'), array('name' => 'update'));
@@ -172,30 +166,30 @@ class PluginDomainsProfile extends Profile
 
    /**
     * @param bool $all
+    *
     * @return array
     */
-   static function getAllRights($all = false)
-   {
+   static function getAllRights($all = false) {
       $rights = array(
          array('itemtype' => 'PluginDomainsDomain',
-            'label' => _n('Domain', 'Domains', 2, 'domains'),
-            'field' => 'plugin_domains'
+               'label'    => _n('Domain', 'Domains', 2, 'domains'),
+               'field'    => 'plugin_domains'
          ),
          array('itemtype' => 'PluginDomainsDomain',
-            'label' => _n('Dropdown', 'Dropdowns', 2),
-            'field' => 'plugin_domains_dropdown',
-            'rights' => array(CREATE => __('Create'),
-               READ => __('Read'),
-               UPDATE => __('Update'),
-               PURGE => array('short' => __('Purge'),
-                  'long' => _x('button', 'Delete permanently')))
+               'label'    => _n('Dropdown', 'Dropdowns', 2),
+               'field'    => 'plugin_domains_dropdown',
+               'rights'   => array(CREATE => __('Create'),
+                                   READ   => __('Read'),
+                                   UPDATE => __('Update'),
+                                   PURGE  => array('short' => __('Purge'),
+                                                   'long'  => _x('button', 'Delete permanently')))
          ),
       );
 
       if ($all) {
          $rights[] = array('itemtype' => 'PluginDomainsDomain',
-            'label' => __('Associable items to a ticket'),
-            'field' => 'plugin_domains_open_ticket');
+                           'label'    => __('Associable items to a ticket'),
+                           'field'    => 'plugin_domains_open_ticket');
       }
 
       return $rights;
@@ -205,11 +199,11 @@ class PluginDomainsProfile extends Profile
     * Init profiles
     *
     * @param $old_right
+    *
     * @return int
     */
 
-   static function translateARight($old_right)
-   {
+   static function translateARight($old_right) {
       switch ($old_right) {
          case '':
             return 0;
@@ -229,23 +223,24 @@ class PluginDomainsProfile extends Profile
    /**
     * @since 0.85
     * Migration rights from old system to the new one for one profile
+    *
     * @param $profiles_id the profile ID
+    *
     * @return bool
     */
-   static function migrateOneProfile($profiles_id)
-   {
+   static function migrateOneProfile($profiles_id) {
       global $DB;
       //Cannot launch migration if there's nothing to migrate...
-      if (!TableExists('glpi_plugin_domains_profiles')) {
+      if (!$DB->tableExists('glpi_plugin_domains_profiles')) {
          return true;
       }
 
       foreach ($DB->request('glpi_plugin_domains_profiles',
-         "`profiles_id`='$profiles_id'") as $profile_data) {
+                            "`profiles_id`='$profiles_id'") as $profile_data) {
 
-         $matching = array('domains' => 'plugin_domains',
-            'domains_dropdown' => 'plugin_domains_dropdown',
-            'open_ticket' => 'plugin_domains_open_ticket');
+         $matching       = array('domains'          => 'plugin_domains',
+                                 'domains_dropdown' => 'plugin_domains_dropdown',
+                                 'open_ticket'      => 'plugin_domains_open_ticket');
          $current_rights = ProfileRight::getProfileRights($profiles_id, array_values($matching));
          foreach ($matching as $old => $new) {
             if (!isset($current_rights[$old])) {
@@ -261,16 +256,14 @@ class PluginDomainsProfile extends Profile
    /**
     * Initialize profiles, and migrate it necessary
     */
-   static function initProfile()
-   {
+   static function initProfile() {
       global $DB;
       $profile = new self();
 
       //Add new rights in glpi_profilerights table
       foreach ($profile->getAllRights(true) as $data) {
          if (countElementsInTable("glpi_profilerights",
-               "`name` = '" . $data['field'] . "'") == 0
-         ) {
+                                  "`name` = '" . $data['field'] . "'") == 0) {
             ProfileRight::addProfileRights(array($data['field']));
          }
       }
@@ -288,8 +281,7 @@ class PluginDomainsProfile extends Profile
    }
 
 
-   static function removeRightsFromSession()
-   {
+   static function removeRightsFromSession() {
       foreach (self::getAllRights(true) as $right) {
          if (isset($_SESSION['glpiactiveprofile'][$right['field']])) {
             unset($_SESSION['glpiactiveprofile'][$right['field']]);

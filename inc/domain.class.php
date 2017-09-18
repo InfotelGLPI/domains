@@ -312,7 +312,7 @@ class PluginDomainsDomain extends CommonDBTM
 
       echo "<td>" . __('Creation date') . "</td>";
       echo "<td>";
-      Html::showDateFormItem("date_creation", $this->fields["date_creation"], true, true);
+      Html::showDateField("date_creation", ['value' => $this->fields["date_creation"]]);
       echo "</td>";
 
       echo "</tr>";
@@ -330,7 +330,7 @@ class PluginDomainsDomain extends CommonDBTM
       Html::showToolTip(nl2br(__('Empty for infinite', 'domains')));
       echo "</td>";
       echo "<td>";
-      Html::showDateFormItem("date_expiration", $this->fields["date_expiration"], true, true);
+      Html::showDateField("date_expiration", ['value' => $this->fields["date_expiration"]]);
       echo "</td>";
 
       echo "</tr>";

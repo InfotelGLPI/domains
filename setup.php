@@ -28,40 +28,38 @@
  */
 
 // Init the hooks of the plugins -Needed
-function plugin_init_domains()
-{
+function plugin_init_domains() {
    global $PLUGIN_HOOKS;
 
-   $PLUGIN_HOOKS['csrf_compliant']['domains'] = true;
-   $PLUGIN_HOOKS['change_profile']['domains'] = array('PluginDomainsProfile', 'initProfile');
+   $PLUGIN_HOOKS['csrf_compliant']['domains']   = true;
+   $PLUGIN_HOOKS['change_profile']['domains']   = array('PluginDomainsProfile', 'initProfile');
    $PLUGIN_HOOKS['assign_to_ticket']['domains'] = true;
 
    if (Session::getLoginUserID()) {
 
       Plugin::registerClass('PluginDomainsDomain', array(
-         'linkuser_tech_types' => true,
-         'linkgroup_tech_types' => true,
-         'document_types' => true,
-         'contract_types' => true,
-         'ticket_types' => true,
-         'helpdesk_visible_types' => true,
+         'linkuser_tech_types'         => true,
+         'linkgroup_tech_types'        => true,
+         'document_types'              => true,
+         'contract_types'              => true,
+         'ticket_types'                => true,
+         'helpdesk_visible_types'      => true,
          'notificationtemplates_types' => true,
-         'link_types' => true
+         'link_types'                  => true
       ));
 
       Plugin::registerClass('PluginDomainsConfig',
-         array('addtabon' => 'CronTask'));
+                            array('addtabon' => 'CronTask'));
 
       Plugin::registerClass('PluginDomainsProfile',
-         array('addtabon' => 'Profile'));
+                            array('addtabon' => 'Profile'));
 
       Plugin::registerClass('PluginDomainsDomain',
-         array('addtabon' => 'Supplier'));
+                            array('addtabon' => 'Supplier'));
 
       $plugin = new Plugin();
       if (!$plugin->isActivated('environment')
-         && Session::haveRight("plugin_domains", READ)
-      ) {
+          && Session::haveRight("plugin_domains", READ)) {
 
          $PLUGIN_HOOKS['menu_toadd']['domains'] = array('assets' => 'PluginDomainsMenu');
       }
@@ -90,17 +88,16 @@ function plugin_init_domains()
 /**
  * @return array
  */
-function plugin_version_domains()
-{
+function plugin_version_domains() {
 
    return array(
-      'name' => _n('Domain', 'Domains', 2, 'domains'),
-      'version' => '1.8.1',
-      'oldname' => 'domain',
-      'license' => 'GPLv2+',
-      'author' => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
-      'homepage' => 'https://github.com/InfotelGLPI/domains',
-      'minGlpiVersion' => '9.1',// For compatibility / no install in version < 9.1
+      'name'           => _n('Domain', 'Domains', 2, 'domains'),
+      'version'        => '1.9.0',
+      'oldname'        => 'domain',
+      'license'        => 'GPLv2+',
+      'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
+      'homepage'       => 'https://github.com/InfotelGLPI/domains',
+      'minGlpiVersion' => '9.2',// For compatibility / no install in version < 9.
    );
 
 }
@@ -109,10 +106,9 @@ function plugin_version_domains()
 /**
  * @return bool
  */
-function plugin_domains_check_prerequisites()
-{
-   if (version_compare(GLPI_VERSION, '9.1', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
-      echo __('This plugin requires GLPI >= 9.1', 'domains');
+function plugin_domains_check_prerequisites() {
+   if (version_compare(GLPI_VERSION, '9.2', 'lt') || version_compare(GLPI_VERSION, '9.3', 'ge')) {
+      echo __('This plugin requires GLPI >= 9.2');
       return false;
    }
    return true;
@@ -122,18 +118,17 @@ function plugin_domains_check_prerequisites()
 /**
  * @return bool
  */
-function plugin_domains_check_config()
-{
+function plugin_domains_check_config() {
    return true;
 }
 
 
 /**
  * @param $types
+ *
  * @return mixed
  */
-function plugin_datainjection_migratetypes_domains($types)
-{
+function plugin_datainjection_migratetypes_domains($types) {
    $types[4400] = 'PluginDomainsDomain';
    return $types;
 }

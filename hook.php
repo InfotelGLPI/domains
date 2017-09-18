@@ -30,21 +30,20 @@
 /**
  * @return bool
  */
-function plugin_domains_install()
-{
+function plugin_domains_install() {
    global $DB;
 
    include_once(GLPI_ROOT . "/plugins/domains/inc/profile.class.php");
 
-   $install = false;
+   $install  = false;
    $update78 = false;
 
-   if (!TableExists("glpi_plugin_domain") && !TableExists("glpi_plugin_domains_domains")) {
+   if (!$DB->tableExists("glpi_plugin_domain") && !$DB->tableExists("glpi_plugin_domains_domains")) {
 
       $install = true;
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/empty-1.8.0.sql");
 
-   } else if (TableExists("glpi_plugin_domain") && !FieldExists("glpi_plugin_domain", "recursive")) {
+   } else if ($DB->tableExists("glpi_plugin_domain") && !$DB->fieldExists("glpi_plugin_domain", "recursive")) {
 
       $update78 = true;
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.1.sql");
@@ -52,39 +51,38 @@ function plugin_domains_install()
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.2.1.sql");
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.3.0.sql");
 
-   } else if (TableExists("glpi_plugin_domain_profiles") && FieldExists("glpi_plugin_domain_profiles", "interface")) {
+   } else if ($DB->tableExists("glpi_plugin_domain_profiles") && $DB->fieldExists("glpi_plugin_domain_profiles", "interface")) {
 
       $update78 = true;
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.2.0.sql");
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.2.1.sql");
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.3.0.sql");
 
-   } else if (TableExists("glpi_plugin_domain") && !FieldExists("glpi_plugin_domain", "helpdesk_visible")) {
+   } else if ($DB->tableExists("glpi_plugin_domain") && !$DB->fieldExists("glpi_plugin_domain", "helpdesk_visible")) {
 
       $update78 = true;
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.2.1.sql");
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.3.0.sql");
 
-   } else if (!TableExists("glpi_plugin_domains_domains")) {
+   } else if (!$DB->tableExists("glpi_plugin_domains_domains")) {
 
       $update78 = true;
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.3.0.sql");
    }
 
    //from 1.3 version
-   if (TableExists("glpi_plugin_domains_domains")
-      && !FieldExists("glpi_plugin_domains_domains", "users_id_tech")
-   ) {
+   if ($DB->tableExists("glpi_plugin_domains_domains")
+       && !$DB->fieldExists("glpi_plugin_domains_domains", "users_id_tech")) {
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.5.0.sql");
    }
 
-   if (TableExists("glpi_plugin_domains_profiles")) {
+   if ($DB->tableExists("glpi_plugin_domains_profiles")) {
 
       $notepad_tables = array('glpi_plugin_domains_domains');
 
       foreach ($notepad_tables as $t) {
          // Migrate data
-         if (FieldExists($t, 'notepad')) {
+         if ($DB->fieldExists($t, 'notepad')) {
             $query = "SELECT id, notepad
                       FROM `$t`
                       WHERE notepad IS NOT NULL
@@ -121,19 +119,19 @@ function plugin_domains_install()
                         ##ENDFOREACHdomains##&lt;/p&gt;');";
       $DB->query($query);
 
-      $query = "INSERT INTO `glpi_notifications`(`name`, `entities_id`, `itemtype`, `event`, `mode`, `notificationtemplates_id`, `is_recursive`, `is_active`) 
+      $query = "INSERT INTO `glpi_notifications`(`name`, `entities_id`, `itemtype`, `event`, `notificationtemplates_id`, `is_recursive`, `is_active`) 
                                    VALUES ('Alert Expired Domains', 0, 'PluginDomainsDomain', 'ExpiredDomains',
-                                          'mail'," . $itemtype . ", 1, 1);";
+                                          " . $itemtype . ", 1, 1);";
 
       $DB->query($query);
-      $query = "INSERT INTO `glpi_notifications`(`name`, `entities_id`, `itemtype`, `event`, `mode`, `notificationtemplates_id`, `is_recursive`, `is_active`) 
+      $query = "INSERT INTO `glpi_notifications`(`name`, `entities_id`, `itemtype`, `event`, `notificationtemplates_id`, `is_recursive`, `is_active`) 
                                    VALUES ('Alert Domains Which Expire', 0, 'PluginDomainsDomain', 'DomainsWhichExpire',
-                                          'mail'," . $itemtype . ", 1, 1);";
+                                          " . $itemtype . ", 1, 1);";
 
       $DB->query($query);
    }
    if ($update78) {
-      $query_ = "SELECT *
+      $query_  = "SELECT *
             FROM `glpi_plugin_domains_profiles` ";
       $result_ = $DB->query($query_);
       if ($DB->numrows($result_) > 0) {
@@ -154,7 +152,7 @@ function plugin_domains_install()
       Plugin::migrateItemType(
          array(4400 => 'PluginDomainsDomain'),
          array("glpi_bookmarks", "glpi_bookmarks_users", "glpi_displaypreferences",
-            "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_tickets"),
+               "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_tickets"),
          array("glpi_plugin_domains_domains_items"));
 
       Plugin::migrateItemType(
@@ -174,56 +172,55 @@ function plugin_domains_install()
 /**
  * @return bool
  */
-function plugin_domains_uninstall()
-{
+function plugin_domains_uninstall() {
    global $DB;
 
    include_once(GLPI_ROOT . "/plugins/domains/inc/profile.class.php");
    include_once(GLPI_ROOT . "/plugins/domains/inc/menu.class.php");
 
    $tables = array("glpi_plugin_domains_domains",
-      "glpi_plugin_domains_domains_items",
-      "glpi_plugin_domains_domaintypes",
-      "glpi_plugin_domains_profiles",
-      "glpi_plugin_domains_configs");
+                   "glpi_plugin_domains_domains_items",
+                   "glpi_plugin_domains_domaintypes",
+                   "glpi_plugin_domains_profiles",
+                   "glpi_plugin_domains_configs");
 
    foreach ($tables as $table)
       $DB->query("DROP TABLE IF EXISTS `$table`;");
 
    //old versions	
    $tables = array("glpi_plugin_domain",
-      "glpi_plugin_domain_profiles",
-      "glpi_plugin_domain_device",
-      "glpi_dropdown_plugin_domain_type",
-      "glpi_plugin_domains_config",
-      "glpi_plugin_domain_mailing",
-      "glpi_plugin_domains_default");
+                   "glpi_plugin_domain_profiles",
+                   "glpi_plugin_domain_device",
+                   "glpi_dropdown_plugin_domain_type",
+                   "glpi_plugin_domains_config",
+                   "glpi_plugin_domain_mailing",
+                   "glpi_plugin_domains_default");
 
    foreach ($tables as $table)
       $DB->query("DROP TABLE IF EXISTS `$table`;");
 
-   $notif = new Notification();
+   $notif   = new Notification();
    $options = array('itemtype' => 'PluginDomainsDomain',
-      'event' => 'ExpiredDomains',
-      'FIELDS' => 'id');
+                    'event'    => 'ExpiredDomains',
+                    'FIELDS'   => 'id');
    foreach ($DB->request('glpi_notifications', $options) as $data) {
       $notif->delete($data);
    }
    $options = array('itemtype' => 'PluginDomainsDomain',
-      'event' => 'DomainsWhichExpire',
-      'FIELDS' => 'id');
+                    'event'    => 'DomainsWhichExpire',
+                    'FIELDS'   => 'id');
    foreach ($DB->request('glpi_notifications', $options) as $data) {
       $notif->delete($data);
    }
 
    //templates
-   $template = new NotificationTemplate();
+   $template    = new NotificationTemplate();
    $translation = new NotificationTemplateTranslation();
-   $options = array('itemtype' => 'PluginDomainsDomain',
-      'FIELDS' => 'id');
+   $options     = array('itemtype' => 'PluginDomainsDomain',
+                        'FIELDS'   => 'id');
    foreach ($DB->request('glpi_notificationtemplates', $options) as $data) {
       $options_template = array('notificationtemplates_id' => $data['id'],
-         'FIELDS' => 'id');
+                                'FIELDS'                   => 'id');
 
       foreach ($DB->request('glpi_notificationtemplatetranslations', $options_template) as $data_template) {
          $translation->delete($data_template);
@@ -232,12 +229,12 @@ function plugin_domains_uninstall()
    }
 
    $tables_glpi = array("glpi_displaypreferences",
-      "glpi_documents_items",
-      "glpi_bookmarks",
-      "glpi_logs",
-      "glpi_items_tickets",
-      "glpi_contracts_items",
-      "glpi_notepads");
+                        "glpi_documents_items",
+                        "glpi_bookmarks",
+                        "glpi_logs",
+                        "glpi_items_tickets",
+                        "glpi_contracts_items",
+                        "glpi_notepads");
 
    foreach ($tables_glpi as $table_glpi)
       $DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` LIKE 'PluginDomainsDomain%';");
@@ -258,8 +255,7 @@ function plugin_domains_uninstall()
    return true;
 }
 
-function plugin_domains_postinit()
-{
+function plugin_domains_postinit() {
    global $PLUGIN_HOOKS;
 
    $PLUGIN_HOOKS['item_purge']['domains'] = array();
@@ -275,10 +271,10 @@ function plugin_domains_postinit()
 
 /**
  * @param $types
+ *
  * @return mixed
  */
-function plugin_domains_AssignToTicket($types)
-{
+function plugin_domains_AssignToTicket($types) {
 
    if (Session::haveRight("plugin_domains_open_ticket", "1"))
       $types['PluginDomainsDomain'] = PluginDomainsDomain::getTypeName(2);
@@ -290,19 +286,18 @@ function plugin_domains_AssignToTicket($types)
 /**
  * @return array
  */
-function plugin_domains_getDatabaseRelations()
-{
+function plugin_domains_getDatabaseRelations() {
 
    $plugin = new Plugin();
 
    if ($plugin->isActivated("domains"))
       return array("glpi_plugin_domains_domaintypes" => array("glpi_plugin_domains_domains" => "plugin_domains_domaintypes_id"),
-         "glpi_users" => array("glpi_plugin_domains_domains" => "users_id_tech"),
-         "glpi_groups" => array("glpi_plugin_domains_domains" => "groups_id_tech"),
-         "glpi_suppliers" => array("glpi_plugin_domains_domains" => "suppliers_id"),
-         "glpi_plugin_domains_domains" => array("glpi_plugin_domains_domains_items" => "plugin_domains_domains_id"),
-         "glpi_entities" => array("glpi_plugin_domains_domains" => "entities_id",
-            "glpi_plugin_domains_domaintypes" => "entities_id"));
+                   "glpi_users"                      => array("glpi_plugin_domains_domains" => "users_id_tech"),
+                   "glpi_groups"                     => array("glpi_plugin_domains_domains" => "groups_id_tech"),
+                   "glpi_suppliers"                  => array("glpi_plugin_domains_domains" => "suppliers_id"),
+                   "glpi_plugin_domains_domains"     => array("glpi_plugin_domains_domains_items" => "plugin_domains_domains_id"),
+                   "glpi_entities"                   => array("glpi_plugin_domains_domains"     => "entities_id",
+                                                              "glpi_plugin_domains_domaintypes" => "entities_id"));
    else
       return array();
 }
@@ -311,8 +306,7 @@ function plugin_domains_getDatabaseRelations()
 /**
  * @return array
  */
-function plugin_domains_getDropdown()
-{
+function plugin_domains_getDropdown() {
 
    $plugin = new Plugin();
 
@@ -326,37 +320,37 @@ function plugin_domains_getDropdown()
 
 /**
  * @param $itemtype
+ *
  * @return array
  */
-function plugin_domains_getAddSearchOptions($itemtype)
-{
+function plugin_domains_getAddSearchOptions($itemtype) {
 
    $sopt = array();
 
    if (in_array($itemtype, PluginDomainsDomain::getTypes(true))) {
       if (Session::haveRight("plugin_domains", READ)) {
-         $sopt[4410]['table'] = 'glpi_plugin_domains_domains';
-         $sopt[4410]['field'] = 'name';
-         $sopt[4410]['name'] = PluginDomainsDomain::getTypeName(2) . " - " .
-            __('Name');
-         $sopt[4410]['forcegroupby'] = true;
-         $sopt[4410]['datatype'] = 'itemlink';
+         $sopt[4410]['table']         = 'glpi_plugin_domains_domains';
+         $sopt[4410]['field']         = 'name';
+         $sopt[4410]['name']          = PluginDomainsDomain::getTypeName(2) . " - " .
+                                        __('Name');
+         $sopt[4410]['forcegroupby']  = true;
+         $sopt[4410]['datatype']      = 'itemlink';
          $sopt[4410]['itemlink_type'] = 'PluginDomainsDomain';
          $sopt[4410]['massiveaction'] = false;
-         $sopt[4410]['joinparams'] = array('beforejoin'
-         => array('table' => 'glpi_plugin_domains_domains_items',
-               'joinparams' => array('jointype' => 'itemtype_item')));
+         $sopt[4410]['joinparams']    = array('beforejoin'
+                                              => array('table'      => 'glpi_plugin_domains_domains_items',
+                                                       'joinparams' => array('jointype' => 'itemtype_item')));
 
-         $sopt[4411]['table'] = 'glpi_plugin_domains_domaintypes';
-         $sopt[4411]['field'] = 'name';
-         $sopt[4411]['name'] = PluginDomainsDomain::getTypeName(2) . " - " .
-            PluginDomainsDomainType::getTypeName(1);
-         $sopt[4411]['forcegroupby'] = true;
-         $sopt[4411]['datatype'] = 'dropdown';
+         $sopt[4411]['table']         = 'glpi_plugin_domains_domaintypes';
+         $sopt[4411]['field']         = 'name';
+         $sopt[4411]['name']          = PluginDomainsDomain::getTypeName(2) . " - " .
+                                        PluginDomainsDomainType::getTypeName(1);
+         $sopt[4411]['forcegroupby']  = true;
+         $sopt[4411]['datatype']      = 'dropdown';
          $sopt[4411]['massiveaction'] = false;
-         $sopt[4411]['joinparams'] = array('beforejoin' => array(
-            array('table' => 'glpi_plugin_domains_domains',
-               'joinparams' => $sopt[4410]['joinparams'])));
+         $sopt[4411]['joinparams']    = array('beforejoin' => array(
+            array('table'      => 'glpi_plugin_domains_domains',
+                  'joinparams' => $sopt[4410]['joinparams'])));
       }
    }
    return $sopt;
@@ -367,14 +361,14 @@ function plugin_domains_getAddSearchOptions($itemtype)
  * @param $ID
  * @param $data
  * @param $num
+ *
  * @return string
  */
-function plugin_domains_displayConfigItem($type, $ID, $data, $num)
-{
+function plugin_domains_displayConfigItem($type, $ID, $data, $num) {
 
    $searchopt =& Search::getOptions($type);
-   $table = $searchopt[$ID]["table"];
-   $field = $searchopt[$ID]["field"];
+   $table     = $searchopt[$ID]["table"];
+   $field     = $searchopt[$ID]["field"];
 
    switch ($table . '.' . $field) {
       case "glpi_plugin_domains_domains.date_expiration" :
@@ -390,15 +384,15 @@ function plugin_domains_displayConfigItem($type, $ID, $data, $num)
  * @param $ID
  * @param $data
  * @param $num
+ *
  * @return date|string|translated
  */
-function plugin_domains_giveItem($type, $ID, $data, $num)
-{
+function plugin_domains_giveItem($type, $ID, $data, $num) {
    global $DB;
 
    $searchopt =& Search::getOptions($type);
-   $table = $searchopt[$ID]["table"];
-   $field = $searchopt[$ID]["field"];
+   $table     = $searchopt[$ID]["table"];
+   $field     = $searchopt[$ID]["field"];
 
    switch ($table . '.' . $field) {
       case "glpi_plugin_domains_domains.date_expiration" :
@@ -409,17 +403,17 @@ function plugin_domains_giveItem($type, $ID, $data, $num)
          return $out;
          break;
       case "glpi_plugin_domains_domains_items.items_id" :
-         $query_device = "SELECT DISTINCT `itemtype`
+         $query_device  = "SELECT DISTINCT `itemtype`
                      FROM `glpi_plugin_domains_domains_items`
                      WHERE `plugin_domains_domains_id` = '" . $data['id'] . "'
                      ORDER BY `itemtype`";
          $result_device = $DB->query($query_device);
          $number_device = $DB->numrows($result_device);
-         $out = '';
-         $domains = $data['id'];
+         $out           = '';
+         $domains       = $data['id'];
          if ($number_device > 0) {
             for ($i = 0; $i < $number_device; $i++) {
-               $column = "name";
+               $column   = "name";
                $itemtype = $DB->result($result_device, $i, "itemtype");
 
                if (!class_exists($itemtype)) {
@@ -428,13 +422,13 @@ function plugin_domains_giveItem($type, $ID, $data, $num)
                $item = new $itemtype();
                if ($item->canView()) {
                   $table_item = getTableForItemType($itemtype);
-                  $query = "SELECT `" . $table_item . "`.*, `glpi_entities`.`ID` AS entity "
-                     . " FROM `glpi_plugin_domains_domains_items`, `" . $table_item
-                     . "` LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `" . $table_item . "`.`entities_id`) "
-                     . " WHERE `" . $table_item . "`.`id` = `glpi_plugin_domains_domains_items`.`items_id`
+                  $query      = "SELECT `" . $table_item . "`.*, `glpi_entities`.`ID` AS entity "
+                                . " FROM `glpi_plugin_domains_domains_items`, `" . $table_item
+                                . "` LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `" . $table_item . "`.`entities_id`) "
+                                . " WHERE `" . $table_item . "`.`id` = `glpi_plugin_domains_domains_items`.`items_id`
                   AND `glpi_plugin_domains_domains_items`.`itemtype` = '$itemtype'
                   AND `glpi_plugin_domains_domains_items`.`plugin_domains_domains_id` = '" . $domains . "' "
-                     . getEntitiesRestrictRequest(" AND ", $table_item, '', '', $item->maybeRecursive());
+                                . getEntitiesRestrictRequest(" AND ", $table_item, '', '', $item->maybeRecursive());
 
                   if ($item->maybeTemplate()) {
                      $query .= " AND `" . $table_item . "`.`is_template` = '0'";
@@ -465,14 +459,14 @@ function plugin_domains_giveItem($type, $ID, $data, $num)
 
 /**
  * @param $type
+ *
  * @return array
  */
-function plugin_domains_MassiveActions($type)
-{
+function plugin_domains_MassiveActions($type) {
 
    if (in_array($type, PluginDomainsDomain::getTypes(true))) {
       return array('PluginDomainsDomain' . MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_domains_add_item' =>
-         __('Associate a domain', 'domains'));
+                      __('Associate a domain', 'domains'));
    }
    return array();
 }
