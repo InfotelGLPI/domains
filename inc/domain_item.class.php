@@ -34,8 +34,7 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class PluginDomainsDomain_Item
  */
-class PluginDomainsDomain_Item extends CommonDBRelation
-{
+class PluginDomainsDomain_Item extends CommonDBRelation {
 
    // From CommonDBRelation
    static public $itemtype_1 = "PluginDomainsDomain";
@@ -49,28 +48,27 @@ class PluginDomainsDomain_Item extends CommonDBRelation
    /**
     * @param CommonDBTM $item
     */
-   static function cleanForItem(CommonDBTM $item)
-   {
+   static function cleanForItem(CommonDBTM $item) {
 
       $temp = new self();
       $temp->deleteByCriteria(
          array('itemtype' => $item->getType(),
-            'items_id' => $item->getField('id'))
+               'items_id' => $item->getField('id'))
       );
    }
 
 
    /**
     * @param CommonGLPI $item
-    * @param int $withtemplate
+    * @param int        $withtemplate
+    *
     * @return array|string|translated
     */
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
-   {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       if (!$withtemplate) {
          if ($item->getType() == 'PluginDomainsDomain'
-            && count(PluginDomainsDomain::getTypes(false))
+             && count(PluginDomainsDomain::getTypes(false))
          ) {
             if ($_SESSION['glpishow_count_on_tabs']) {
                return self::createTabEntry(_n('Associated item', 'Associated items', 2), self::countForDomain($item));
@@ -78,7 +76,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation
             return _n('Associated item', 'Associated items', 2);
 
          } else if (in_array($item->getType(), PluginDomainsDomain::getTypes(true))
-            && Session::haveRight('plugin_domains', READ)
+                    && Session::haveRight('plugin_domains', READ)
          ) {
             if ($_SESSION['glpishow_count_on_tabs']) {
                return self::createTabEntry(PluginDomainsDomain::getTypeName(2), self::countForItem($item));
@@ -92,12 +90,12 @@ class PluginDomainsDomain_Item extends CommonDBRelation
 
    /**
     * @param CommonGLPI $item
-    * @param int $tabnum
-    * @param int $withtemplate
+    * @param int        $tabnum
+    * @param int        $withtemplate
+    *
     * @return bool
     */
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
-   {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       if ($item->getType() == 'PluginDomainsDomain') {
 
@@ -113,30 +111,31 @@ class PluginDomainsDomain_Item extends CommonDBRelation
 
    /**
     * @param PluginDomainsDomain $item
+    *
     * @return int
     */
-   static function countForDomain(PluginDomainsDomain $item)
-   {
+   static function countForDomain(PluginDomainsDomain $item) {
 
       $types = implode("','", $item->getTypes());
       if (empty($types)) {
          return 0;
       }
-      return countElementsInTable('glpi_plugin_domains_domains_items',
-         "`itemtype` IN ('$types')
+      $dbu = new DbUtils();
+      return $dbu->countElementsInTable('glpi_plugin_domains_domains_items',
+                                        "`itemtype` IN ('$types')
                                    AND `plugin_domains_domains_id` = '" . $item->getID() . "'");
    }
 
 
    /**
     * @param CommonDBTM $item
+    *
     * @return int
     */
-   static function countForItem(CommonDBTM $item)
-   {
-
-      return countElementsInTable('glpi_plugin_domains_domains_items',
-         "`itemtype`='" . $item->getType() . "'
+   static function countForItem(CommonDBTM $item) {
+      $dbu = new DbUtils();
+      return $dbu->countElementsInTable('glpi_plugin_domains_domains_items',
+                                        "`itemtype`='" . $item->getType() . "'
                                    AND `items_id` = '" . $item->getID() . "'");
    }
 
@@ -144,14 +143,14 @@ class PluginDomainsDomain_Item extends CommonDBRelation
     * @param $plugin_domains_domains_id
     * @param $items_id
     * @param $itemtype
+    *
     * @return bool
     */
-   function getFromDBbyDomainsAndItem($plugin_domains_domains_id, $items_id, $itemtype)
-   {
+   function getFromDBbyDomainsAndItem($plugin_domains_domains_id, $items_id, $itemtype) {
       global $DB;
 
       $query = "SELECT * FROM `" . $this->getTable() . "` " .
-         "WHERE `plugin_domains_domains_id` = '" . $plugin_domains_domains_id . "' 
+               "WHERE `plugin_domains_domains_id` = '" . $plugin_domains_domains_id . "' 
          AND `itemtype` = '" . $itemtype . "'
          AND `items_id` = '" . $items_id . "'";
       if ($result = $DB->query($query)) {
@@ -171,12 +170,11 @@ class PluginDomainsDomain_Item extends CommonDBRelation
    /**
     * @param $values
     */
-   function addItem($values)
-   {
+   function addItem($values) {
 
       $this->add(array('plugin_domains_domains_id' => $values["plugin_domains_domains_id"],
-         'items_id' => $values["items_id"],
-         'itemtype' => $values["itemtype"]));
+                       'items_id'                  => $values["items_id"],
+                       'itemtype'                  => $values["itemtype"]));
 
    }
 
@@ -185,8 +183,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation
     * @param $items_id
     * @param $itemtype
     */
-   function deleteItemByDomainsAndItem($plugin_domains_domains_id, $items_id, $itemtype)
-   {
+   function deleteItemByDomainsAndItem($plugin_domains_domains_id, $items_id, $itemtype) {
 
       if ($this->getFromDBbyDomainsAndItem($plugin_domains_domains_id, $items_id, $itemtype)) {
          $this->delete(array('id' => $this->fields["id"]));
@@ -202,8 +199,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation
     *
     * @return nothing (HTML display)
     **/
-   public static function showForDomain(PluginDomainsDomain $domain)
-   {
+   public static function showForDomain(PluginDomainsDomain $domain) {
       global $DB;
 
       $instID = $domain->fields['id'];
@@ -211,7 +207,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation
          return false;
       }
       $canedit = $domain->can($instID, UPDATE);
-      $rand = mt_rand();
+      $rand    = mt_rand();
 
       $query = "SELECT DISTINCT `itemtype`
             FROM `glpi_plugin_domains_domains_items`
@@ -235,19 +231,19 @@ class PluginDomainsDomain_Item extends CommonDBRelation
 
          echo "<table class='tab_cadre_fixe'>";
          echo "<tr class='tab_bg_2'><th colspan='" . ($canedit ? (5 + $colsup) : (4 + $colsup)) . "'>" .
-            __('Add an item') . "</th></tr>";
+              __('Add an item') . "</th></tr>";
 
          echo "<tr class='tab_bg_1'><td colspan='" . (3 + $colsup) . "' class='center'>";
          Dropdown::showSelectItemFromItemtypes(array('items_id_name' => 'items_id',
-            'itemtypes' => PluginDomainsDomain::getTypes(true),
-            'entity_restrict'
-            => ($domain->fields['is_recursive']
-               ? getSonsOf('glpi_entities',
-                  $domain->fields['entities_id'])
-               : $domain->fields['entities_id']),
-            'checkright'
-            => true,
-         ));
+                                                     'itemtypes'     => PluginDomainsDomain::getTypes(true),
+                                                     'entity_restrict'
+                                                                     => ($domain->fields['is_recursive']
+                                                        ? getSonsOf('glpi_entities',
+                                                                    $domain->fields['entities_id'])
+                                                        : $domain->fields['entities_id']),
+                                                     'checkright'
+                                                                     => true,
+                                               ));
          echo "</td><td colspan='2' class='center' class='tab_bg_1'>";
          echo "<input type='hidden' name='plugin_domains_domains_id' value='$instID'>";
          echo "<input type='submit' name='additem' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
@@ -289,16 +285,16 @@ class PluginDomainsDomain_Item extends CommonDBRelation
             $column = "name";
 
             $itemTable = getTableForItemType($itemtype);
-            $query = " SELECT `" . $itemTable . "`.*,
+            $query     = " SELECT `" . $itemTable . "`.*,
                               `glpi_plugin_domains_domains_items`.`id` AS items_id,
                               `glpi_entities`.id AS entity "
-               . " FROM `glpi_plugin_domains_domains_items`, `" . $itemTable
-               . "` LEFT JOIN `glpi_entities`
+                         . " FROM `glpi_plugin_domains_domains_items`, `" . $itemTable
+                         . "` LEFT JOIN `glpi_entities`
                      ON (`glpi_entities`.`id` = `" . $itemTable . "`.`entities_id`) "
-               . " WHERE `" . $itemTable . "`.`id` = `glpi_plugin_domains_domains_items`.`items_id`
+                         . " WHERE `" . $itemTable . "`.`id` = `glpi_plugin_domains_domains_items`.`items_id`
                      AND `glpi_plugin_domains_domains_items`.`itemtype` = '$itemtype'
                      AND `glpi_plugin_domains_domains_items`.`plugin_domains_domains_id` = '$instID' "
-               . getEntitiesRestrictRequest(" AND ", $itemTable, '', '', $item->maybeRecursive());
+                         . getEntitiesRestrictRequest(" AND ", $itemTable, '', '', $item->maybeRecursive());
 
             if ($item->maybeTemplate()) {
                $query .= " AND " . $itemTable . ".is_template='0'";
@@ -324,7 +320,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation
 
                      $link = Toolbox::getItemTypeFormURL($itemtype);
                      $name = "<a href=\"" . $link . "?id=" . $data["id"] . "\">"
-                        . $data["name"] . "$ID</a>";
+                             . $data["name"] . "$ID</a>";
 
                      echo "<tr class='tab_bg_1'>";
 
@@ -336,7 +332,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation
                      echo "<td class='center'>" . $item->getTypeName(1) . "</td>";
 
                      echo "<td class='center' " . (isset($data['is_deleted']) && $data['is_deleted'] ? "class='tab_bg_2_2'" : "") .
-                        ">" . $name . "</td>";
+                          ">" . $name . "</td>";
                      if (Session::isMultiEntitiesMode())
                         echo "<td class='center'>" . Dropdown::getDropdownName("glpi_entities", $data['entity']) . "</td>";
                      echo "<td class='center'>" . (isset($data["serial"]) ? "" . $data["serial"] . "" : "-") . "</td>";
@@ -362,10 +358,9 @@ class PluginDomainsDomain_Item extends CommonDBRelation
    /**
     * @since version 0.84
     **/
-   function getForbiddenStandardMassiveAction()
-   {
+   function getForbiddenStandardMassiveAction() {
 
-      $forbidden = parent::getForbiddenStandardMassiveAction();
+      $forbidden   = parent::getForbiddenStandardMassiveAction();
       $forbidden[] = 'update';
       return $forbidden;
    }
@@ -380,8 +375,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation
     *
     * @return bool
     */
-   static function showForItem(CommonDBTM $item, $withtemplate = '')
-   {
+   static function showForItem(CommonDBTM $item, $withtemplate = '') {
       global $DB, $CFG_GLPI;
 
       $ID = $item->getField('id');
@@ -401,8 +395,8 @@ class PluginDomainsDomain_Item extends CommonDBRelation
          $withtemplate = 0;
       }
 
-      $canedit = $item->canAddItem('PluginDomainsDomain');
-      $rand = mt_rand();
+      $canedit      = $item->canAddItem('PluginDomainsDomain');
+      $rand         = mt_rand();
       $is_recursive = $item->isRecursive();
 
       $query = "SELECT `glpi_plugin_domains_domains_items`.`id` AS assocID,
@@ -422,22 +416,22 @@ class PluginDomainsDomain_Item extends CommonDBRelation
 
       $result = $DB->query($query);
       $number = $DB->numrows($result);
-      $i = 0;
+      $i      = 0;
 
       $domains = array();
-      $domain = new PluginDomainsDomain();
-      $used = array();
+      $domain  = new PluginDomainsDomain();
+      $used    = array();
       if ($numrows = $DB->numrows($result)) {
          while ($data = $DB->fetch_assoc($result)) {
             $domains[$data['assocID']] = $data;
-            $used[$data['id']] = $data['id'];
+            $used[$data['id']]         = $data['id'];
          }
       }
 
       if ($canedit && $withtemplate < 2) {
          // Restrict entity for knowbase
          $entities = "";
-         $entity = $_SESSION["glpiactive_entity"];
+         $entity   = $_SESSION["glpiactive_entity"];
 
          if ($item->isEntityAssign()) {
             /// Case of personal items : entity = -1 : create on active entity (Reminder case))
@@ -452,19 +446,19 @@ class PluginDomainsDomain_Item extends CommonDBRelation
             }
          }
          $limit = getEntitiesRestrictRequest(" AND ", "glpi_plugin_domains_domains", '', $entities, true);
-         $q = "SELECT COUNT(*)
+         $q     = "SELECT COUNT(*)
                FROM `glpi_plugin_domains_domains`
                WHERE `is_deleted` = '0'
                $limit";
 
          $result = $DB->query($q);
-         $nb = $DB->result($result, 0, 0);
+         $nb     = $DB->result($result, 0, 0);
 
          echo "<div class='firstbloc'>";
 
 
          if (Session::haveRight('plugin_domains', READ)
-            && ($nb > count($used))
+             && ($nb > count($used))
          ) {
             echo "<form name='domain_form$rand' id='domain_form$rand' method='post'
                    action='" . Toolbox::getItemTypeFormURL('PluginDomainsDomain') . "'>";
@@ -480,11 +474,11 @@ class PluginDomainsDomain_Item extends CommonDBRelation
             }
 
             PluginDomainsDomain::dropdownDomains(array('entity' => $entities,
-               'used' => $used));
+                                                       'used'   => $used));
 
             echo "</td><td class='center' width='20%'>";
             echo "<input type='submit' name='additem' value=\"" .
-               __('Associate a domain', 'domains') . "\" class='submit'>";
+                 __('Associate a domain', 'domains') . "\" class='submit'>";
             echo "</td>";
             echo "</tr>";
             echo "</table>";
@@ -524,13 +518,13 @@ class PluginDomainsDomain_Item extends CommonDBRelation
          Session::initNavigateListItems('PluginDomainsDomain',
             //TRANS : %1$s is the itemtype name,
             //        %2$s is the name of the item (used for headings of a list)
-            sprintf(__('%1$s = %2$s'),
-               $item->getTypeName(1), $item->getName()));
+                                        sprintf(__('%1$s = %2$s'),
+                                                $item->getTypeName(1), $item->getName()));
 
 
          foreach ($domains as $data) {
             $domainID = $data["id"];
-            $link = NOT_AVAILABLE;
+            $link     = NOT_AVAILABLE;
 
             if ($domain->getFromDB($domainID)) {
                $link = $domain->getLink();
@@ -549,7 +543,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation
             echo "<td class='center'>$link</td>";
             if (Session::isMultiEntitiesMode()) {
                echo "<td class='center'>" . Dropdown::getDropdownName("glpi_entities", $data['entities_id']) .
-                  "</td>";
+                    "</td>";
             }
             echo "<td class='center'>" . Dropdown::getDropdownName("glpi_groups", $data["groups_id_tech"]) . "</td>";
             echo "<td>";
@@ -562,7 +556,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation
             echo "<td class='center'>" . Dropdown::getDropdownName("glpi_plugin_domains_domaintypes", $data["plugin_domains_domaintypes_id"]) . "</td>";
             echo "<td class='center'>" . Html::convDate($data["date_creation"]) . "</td>";
             if ($data["date_expiration"] <= date('Y-m-d')
-               && !empty($data["date_expiration"])
+                && !empty($data["date_expiration"])
             ) {
                echo "<td class='center'><div class='deleted'>" . Html::convDate($data["date_expiration"]) . "</div></td>";
             } else if (empty($data["date_expiration"])) {
