@@ -35,63 +35,59 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class PluginDomainsNotificationTargetDomain
  */
-class PluginDomainsNotificationTargetDomain extends NotificationTarget
-{
+class PluginDomainsNotificationTargetDomain extends NotificationTarget {
 
    /**
     * @return array
     */
-   function getEvents()
-   {
-      return array('ExpiredDomains' => __('Expired domains', 'domains'),
-         'DomainsWhichExpire' => __('Expiring domains', 'domains'));
+   function getEvents() {
+      return array('ExpiredDomains'     => __('Expired domains', 'domains'),
+                   'DomainsWhichExpire' => __('Expiring domains', 'domains'));
    }
 
    /**
-    * @param $event
+    * @param       $event
     * @param array $options
     */
-   function getDatasForTemplate($event, $options = array())
-   {
+   function addDataForTemplate($event, $options = array()) {
 
-      $this->datas['##domain.entity##'] =
+      $this->data['##domain.entity##']      =
          Dropdown::getDropdownName('glpi_entities',
-            $options['entities_id']);
-      $this->datas['##lang.domain.entity##'] = __('Entity');
-      $this->datas['##domain.action##'] = ($event == "ExpiredDomains" ? __('Expired domains', 'domains') :
+                                   $options['entities_id']);
+      $this->data['##lang.domain.entity##'] = __('Entity');
+      $this->data['##domain.action##']      = ($event == "ExpiredDomains" ? __('Expired domains', 'domains') :
          __('Expiring domains', 'domains'));
 
-      $this->datas['##lang.domain.name##'] = __('Name');
-      $this->datas['##lang.domain.dateexpiration##'] = __('Expiration date');
+      $this->data['##lang.domain.name##']           = __('Name');
+      $this->data['##lang.domain.dateexpiration##'] = __('Expiration date');
 
       foreach ($options['domains'] as $id => $domain) {
          $tmp = array();
 
-         $tmp['##domain.name##'] = $domain['name'];
+         $tmp['##domain.name##']           = $domain['name'];
          $tmp['##domain.dateexpiration##'] = Html::convDate($domain['date_expiration']);
 
-         $this->datas['domains'][] = $tmp;
+         $this->data['domains'][] = $tmp;
       }
    }
 
    /**
     *
     */
-   function getTags()
-   {
+   function getTags() {
 
-      $tags = array('domain.name' => __('Name'),
-         'domain.dateexpiration' => __('Expiration date'));
+      $tags = array('domain.name'           => __('Name'),
+                    'domain.dateexpiration' => __('Expiration date'));
       foreach ($tags as $tag => $label) {
-         $this->addTagToList(array('tag' => $tag, 'label' => $label,
-            'value' => true));
+         $this->addTagToList(array('tag'   => $tag, 'label' => $label,
+                                   'value' => true));
       }
 
-      $this->addTagToList(array('tag' => 'domains',
-         'label' => __('Expired or expiring domains', 'domains'),
-         'value' => false,
-         'foreach' => true,
-         'events' => array('DomainsWhichExpire', 'ExpiredDomains')));
+      $this->addTagToList(array('tag'     => 'domains',
+                                'label'   => __('Expired or expiring domains', 'domains'),
+                                'value'   => false,
+                                'foreach' => true,
+                                'events'  => array('DomainsWhichExpire', 'ExpiredDomains')));
 
       asort($this->tag_descriptions);
    }
