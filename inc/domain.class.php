@@ -681,7 +681,7 @@ class PluginDomainsDomain extends CommonDBTM {
    static function cronDomainsAlert($task = NULL) {
       global $DB, $CFG_GLPI;
 
-      if (!$CFG_GLPI["use_mailing"]) {
+      if (!$CFG_GLPI["notifications_mailing"]) {
          return 0;
       }
 
