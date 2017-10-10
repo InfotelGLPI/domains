@@ -719,8 +719,7 @@ class PluginDomainsDomain extends CommonDBTM {
             if (NotificationEvent::raiseEvent(($type == Alert::NOTICE ? "DomainsWhichExpire" : "ExpiredDomains"),
                new PluginDomainsDomain(),
                array('entities_id' => $entity,
-                     'domains'     => $domains))
-            ) {
+                     'domains'     => $domains))) {
                $message     = $domain_messages[$type][$entity];
                $cron_status = 1;
                if ($task) {

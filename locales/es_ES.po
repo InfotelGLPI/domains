@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - domains plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-26 10:27+0100\n"
-"PO-Revision-Date: 2016-11-09 15:56+0000\n"
-"Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>\n"
+"POT-Creation-Date: 2017-10-10 09:06+0200\n"
+"PO-Revision-Date: 2017-10-10 07:21+0000\n"
+"Last-Translator: Amandine Manceau\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/tsmr/GLPI_domains/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,61 +19,57 @@ msgstr ""
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: hook.php:369 inc/domain_item.class.php:505
+#: hook.php:424 inc/domain.class.php:912 inc/domain_item.class.php:563
 msgid "Does not expire"
 msgstr "No caduca nunca"
 
-#: hook.php:433 inc/domain_item.class.php:423
+#: hook.php:493 inc/domain_item.class.php:481
 msgid "Associate a domain"
 msgstr "Asociar un dominio"
 
-#: setup.php:86 inc/domain.class.php:46 inc/menu.class.php:35
-#: inc/profile.class.php:145
+#: setup.php:94 inc/domain.class.php:54 inc/menu.class.php:43
+#: inc/profile.class.php:175
 msgid "Domain"
 msgid_plural "Domains"
 msgstr[0] "Dominio"
 msgstr[1] "Dominios"
 
-#: setup.php:100
-msgid "This plugin requires GLPI >= 0.85"
-msgstr ""
-
-#: inc/config.class.php:39
+#: inc/config.class.php:49
 msgid "Plugin Setup"
 msgstr "Configuración del plugin"
 
-#: inc/config.class.php:64
+#: inc/config.class.php:86
 msgid "Time of checking of validity of domains"
 msgstr "Período de comprobación de validez de los dominios"
 
-#: inc/config.class.php:73 inc/domain.class.php:618
+#: inc/config.class.php:95 inc/domain.class.php:708
 msgid "Domains expired since more"
 msgstr "Dominios caducados desde más de"
 
-#: inc/config.class.php:77
+#: inc/config.class.php:99
 msgid "Domains expiring in less than"
 msgstr "Dominios que van a caducar en menos de"
 
-#: inc/domain.class.php:268
+#: inc/domain.class.php:326
 msgid "Empty for infinite"
 msgstr "vacío para infinito"
 
-#: inc/domain.class.php:544 inc/notificationtargetdomain.class.php:75
+#: inc/domain.class.php:628 inc/notificationtargetdomain.class.php:86
 msgid "Expired or expiring domains"
 msgstr "Dominios caducados o que van a caducar"
 
-#: inc/domaintype.class.php:39
+#: inc/domaintype.class.php:48
 msgid "Domain type"
 msgid_plural "Domain types"
 msgstr[0] "Tipo de dominio"
 msgstr[1] "Tipos de dominio"
 
-#: inc/notificationtargetdomain.class.php:38
-#: inc/notificationtargetdomain.class.php:49
+#: inc/notificationtargetdomain.class.php:43
+#: inc/notificationtargetdomain.class.php:57
 msgid "Expired domains"
 msgstr "Dominios caducados"
 
-#: inc/notificationtargetdomain.class.php:39
-#: inc/notificationtargetdomain.class.php:50
+#: inc/notificationtargetdomain.class.php:44
+#: inc/notificationtargetdomain.class.php:58
 msgid "Expiring domains"
 msgstr "Dominios que van a caducar"
