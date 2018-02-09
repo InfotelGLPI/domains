@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of domains.
 
  domains is free software; you can redistribute it and/or modify
@@ -42,8 +42,7 @@ class PluginDomainsConfig extends CommonDBTM
     * @param int $withtemplate
     * @return string|translated
     */
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
-   {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       if ($item->getType() == 'CronTask' && $item->getField('name') == "DomainsAlert") {
          return __('Plugin Setup', 'domains');
@@ -58,8 +57,7 @@ class PluginDomainsConfig extends CommonDBTM
     * @param int $withtemplate
     * @return bool
     */
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
-   {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       global $CFG_GLPI;
 
       if ($item->getType() == 'CronTask') {
@@ -74,8 +72,7 @@ class PluginDomainsConfig extends CommonDBTM
     * @param $target
     * @param $ID
     */
-   function showForm($target, $ID)
-   {
+   function showForm($target, $ID) {
 
       $this->getFromDB($ID);
       $delay_expired = $this->fields["delay_expired"];

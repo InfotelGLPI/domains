@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of domains.
 
  domains is free software; you can redistribute it and/or modify
@@ -30,10 +30,11 @@
 include('../../../inc/includes.php');
 
 $plugin = new Plugin();
-if ($plugin->isActivated("environment"))
+if ($plugin->isActivated("environment")) {
    Html::header(PluginDomainsDomain::getTypeName(2), '', "assets", "pluginenvironmentdisplay", "domains");
-else
+} else {
    Html::header(PluginDomainsDomain::getTypeName(2), '', "assets", "plugindomainsmenu");
+}
 
 $domain = new PluginDomainsDomain();
 

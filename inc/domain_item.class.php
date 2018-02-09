@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of domains.
 
  domains is free software; you can redistribute it and/or modify
@@ -52,8 +52,8 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
 
       $temp = new self();
       $temp->deleteByCriteria(
-         array('itemtype' => $item->getType(),
-               'items_id' => $item->getField('id'))
+         ['itemtype' => $item->getType(),
+               'items_id' => $item->getField('id')]
       );
    }
 
@@ -172,9 +172,9 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
     */
    function addItem($values) {
 
-      $this->add(array('plugin_domains_domains_id' => $values["plugin_domains_domains_id"],
+      $this->add(['plugin_domains_domains_id' => $values["plugin_domains_domains_id"],
                        'items_id'                  => $values["items_id"],
-                       'itemtype'                  => $values["itemtype"]));
+                       'itemtype'                  => $values["itemtype"]]);
 
    }
 
@@ -186,7 +186,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
    function deleteItemByDomainsAndItem($plugin_domains_domains_id, $items_id, $itemtype) {
 
       if ($this->getFromDBbyDomainsAndItem($plugin_domains_domains_id, $items_id, $itemtype)) {
-         $this->delete(array('id' => $this->fields["id"]));
+         $this->delete(['id' => $this->fields["id"]]);
       }
    }
 
@@ -234,16 +234,16 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
               __('Add an item') . "</th></tr>";
 
          echo "<tr class='tab_bg_1'><td colspan='" . (3 + $colsup) . "' class='center'>";
-         Dropdown::showSelectItemFromItemtypes(array('items_id_name' => 'items_id',
+         Dropdown::showSelectItemFromItemtypes(['items_id_name' => 'items_id',
                                                      'itemtypes'     => PluginDomainsDomain::getTypes(true),
                                                      'entity_restrict'
                                                                      => ($domain->fields['is_recursive']
                                                         ? getSonsOf('glpi_entities',
                                                                     $domain->fields['entities_id'])
-                                                        : $domain->fields['entities_id']),
+                                                                     : $domain->fields['entities_id']),
                                                      'checkright'
                                                                      => true,
-                                               ));
+                                               ]);
          echo "</td><td colspan='2' class='center' class='tab_bg_1'>";
          echo "<input type='hidden' name='plugin_domains_domains_id' value='$instID'>";
          echo "<input type='submit' name='additem' value=\"" . _sx('button', 'Add') . "\" class='submit'>";
@@ -256,7 +256,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
       echo "<div class='spaced'>";
       if ($canedit && $number) {
          Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-         $massiveactionparams = array();
+         $massiveactionparams = [];
          Html::showMassiveActions($massiveactionparams);
       }
       echo "<table class='tab_cadre_fixe'>";
@@ -268,8 +268,9 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
 
       echo "<th>" . __('Type') . "</th>";
       echo "<th>" . __('Name') . "</th>";
-      if (Session::isMultiEntitiesMode())
+      if (Session::isMultiEntitiesMode()) {
          echo "<th>" . __('Entity') . "</th>";
+      }
       echo "<th>" . __('Serial number') . "</th>";
       echo "<th>" . __('Inventory number') . "</th>";
       echo "</tr>";
@@ -315,8 +316,9 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
 
                      $ID = "";
 
-                     if ($_SESSION["glpiis_ids_visible"] || empty($data["name"]))
+                     if ($_SESSION["glpiis_ids_visible"] || empty($data["name"])) {
                         $ID = " (" . $data["id"] . ")";
+                     }
 
                      $link = Toolbox::getItemTypeFormURL($itemtype);
                      $name = "<a href=\"" . $link . "?id=" . $data["id"] . "\">"
@@ -333,8 +335,9 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
 
                      echo "<td class='center' " . (isset($data['is_deleted']) && $data['is_deleted'] ? "class='tab_bg_2_2'" : "") .
                           ">" . $name . "</td>";
-                     if (Session::isMultiEntitiesMode())
+                     if (Session::isMultiEntitiesMode()) {
                         echo "<td class='center'>" . Dropdown::getDropdownName("glpi_entities", $data['entity']) . "</td>";
+                     }
                      echo "<td class='center'>" . (isset($data["serial"]) ? "" . $data["serial"] . "" : "-") . "</td>";
                      echo "<td class='center'>" . (isset($data["otherserial"]) ? "" . $data["otherserial"] . "" : "-") . "</td>";
 
@@ -418,9 +421,9 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
       $number = $DB->numrows($result);
       $i      = 0;
 
-      $domains = array();
+      $domains = [];
       $domain  = new PluginDomainsDomain();
-      $used    = array();
+      $used    = [];
       if ($numrows = $DB->numrows($result)) {
          while ($data = $DB->fetch_assoc($result)) {
             $domains[$data['assocID']] = $data;
@@ -456,7 +459,6 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
 
          echo "<div class='firstbloc'>";
 
-
          if (Session::haveRight('plugin_domains', READ)
              && ($nb > count($used))
          ) {
@@ -473,8 +475,8 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
                echo "<input type='hidden' name='tickets_id' value='$ID'>";
             }
 
-            PluginDomainsDomain::dropdownDomains(array('entity' => $entities,
-                                                       'used'   => $used));
+            PluginDomainsDomain::dropdownDomains(['entity' => $entities,
+                                                       'used'   => $used]);
 
             echo "</td><td class='center' width='20%'>";
             echo "<input type='submit' name='additem' value=\"" .
@@ -491,7 +493,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
       echo "<div class='spaced'>";
       if ($canedit && $number && ($withtemplate < 2)) {
          Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-         $massiveactionparams = array('num_displayed' => $number);
+         $massiveactionparams = ['num_displayed' => $number];
          Html::showMassiveActions($massiveactionparams);
       }
       echo "<table class='tab_cadre_fixe'>";
@@ -511,7 +513,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
       echo "<th>" . __('Creation date') . "</th>";
       echo "<th>" . __('Expiration date') . "</th>";
       echo "</tr>";
-      $used = array();
+      $used = [];
 
       if ($number) {
 
@@ -520,7 +522,6 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
             //        %2$s is the name of the item (used for headings of a list)
                                         sprintf(__('%1$s = %2$s'),
                                                 $item->getTypeName(1), $item->getName()));
-
 
          foreach ($domains as $data) {
             $domainID = $data["id"];
@@ -549,8 +550,9 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
             echo "<td>";
             echo "<a href=\"" . $CFG_GLPI["root_doc"] . "/front/enterprise.form.php?ID=" . $data["suppliers_id"] . "\">";
             echo Dropdown::getDropdownName("glpi_suppliers", $data["suppliers_id"]);
-            if ($_SESSION["glpiis_ids_visible"] == 1)
+            if ($_SESSION["glpiis_ids_visible"] == 1) {
                echo " (" . $data["suppliers_id"] . ")";
+            }
             echo "</a></td>";
             echo "<td class='center'>" . getUserName($data["users_id_tech"]) . "</td>";
             echo "<td class='center'>" . Dropdown::getDropdownName("glpi_plugin_domains_domaintypes", $data["plugin_domains_domaintypes_id"]) . "</td>";
@@ -568,7 +570,6 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
             $i++;
          }
       }
-
 
       echo "</table>";
       if ($canedit && $number && ($withtemplate < 2)) {

@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of domains.
 
  domains is free software; you can redistribute it and/or modify
@@ -41,8 +41,7 @@ class PluginDomainsDomainInjection extends PluginDomainsDomain
    /**
     * @return mixed
     */
-   static function getTable()
-   {
+   static function getTable() {
 
       $parenttype = get_parent_class();
       return $parenttype::getTable();
@@ -52,25 +51,22 @@ class PluginDomainsDomainInjection extends PluginDomainsDomain
    /**
     * @return bool
     */
-   function isPrimaryType()
-   {
+   function isPrimaryType() {
       return true;
    }
 
    /**
     * @return array
     */
-   function connectedTo()
-   {
-      return array();
+   function connectedTo() {
+      return [];
    }
 
    /**
     * @param string $primary_type
     * @return array|the
     */
-   function getOptions($primary_type = '')
-   {
+   function getOptions($primary_type = '') {
 
       $tab = Search::getOptions(get_parent_class($this));
 
@@ -79,13 +75,13 @@ class PluginDomainsDomainInjection extends PluginDomainsDomain
       $tab[6]['checktype'] = 'date';
       //$blacklist = PluginDatainjectionCommonInjectionLib::getBlacklistedOptions();
       //Remove some options because some fields cannot be imported
-      $notimportable = array(8, 12, 30, 80);
+      $notimportable = [8, 12, 30, 80];
       $options['ignore_fields'] = $notimportable;
-      $options['displaytype'] = array("dropdown" => array(2, 4, 10),
-         "user" => array(3),
-         "multiline_text" => array(7),
-         "date" => array(5),
-         "bool" => array(11, 18));
+      $options['displaytype'] = ["dropdown" => [2, 4, 10],
+         "user" => [3],
+         "multiline_text" => [7],
+         "date" => [5],
+         "bool" => [11, 18]];
 
       $tab = PluginDatainjectionCommonInjectionLib::addToSearchOptions($tab, $options, $this);
 
@@ -101,8 +97,7 @@ class PluginDomainsDomainInjection extends PluginDomainsDomain
     * @internal param fields $fields to add into glpi
     * @internal param options $options used during creation
     */
-   function deleteObject($values = array(), $options = array())
-   {
+   function deleteObject($values = [], $options = []) {
       $lib = new PluginDatainjectionCommonInjectionLib($this, $values, $options);
       $lib->deleteObject();
       return $lib->getInjectionResults();
@@ -117,8 +112,7 @@ class PluginDomainsDomainInjection extends PluginDomainsDomain
     * @internal param fields $values to add into glpi
     * @internal param options $options used during creation
     */
-   function addOrUpdateObject($values = array(), $options = array())
-   {
+   function addOrUpdateObject($values = [], $options = []) {
 
       $lib = new PluginDatainjectionCommonInjectionLib($this, $values, $options);
       $lib->processAddOrUpdate();

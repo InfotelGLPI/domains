@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of domains.
 
  domains is free software; you can redistribute it and/or modify
@@ -40,15 +40,15 @@ class PluginDomainsNotificationTargetDomain extends NotificationTarget {
     * @return array
     */
    function getEvents() {
-      return array('ExpiredDomains'     => __('Expired domains', 'domains'),
-                   'DomainsWhichExpire' => __('Expiring domains', 'domains'));
+      return ['ExpiredDomains'     => __('Expired domains', 'domains'),
+                   'DomainsWhichExpire' => __('Expiring domains', 'domains')];
    }
 
    /**
     * @param       $event
     * @param array $options
     */
-   function addDataForTemplate($event, $options = array()) {
+   function addDataForTemplate($event, $options = []) {
 
       $this->data['##domain.entity##']      =
          Dropdown::getDropdownName('glpi_entities',
@@ -61,7 +61,7 @@ class PluginDomainsNotificationTargetDomain extends NotificationTarget {
       $this->data['##lang.domain.dateexpiration##'] = __('Expiration date');
 
       foreach ($options['domains'] as $id => $domain) {
-         $tmp = array();
+         $tmp = [];
 
          $tmp['##domain.name##']           = $domain['name'];
          $tmp['##domain.dateexpiration##'] = Html::convDate($domain['date_expiration']);
@@ -75,18 +75,18 @@ class PluginDomainsNotificationTargetDomain extends NotificationTarget {
     */
    function getTags() {
 
-      $tags = array('domain.name'           => __('Name'),
-                    'domain.dateexpiration' => __('Expiration date'));
+      $tags = ['domain.name'           => __('Name'),
+                    'domain.dateexpiration' => __('Expiration date')];
       foreach ($tags as $tag => $label) {
-         $this->addTagToList(array('tag'   => $tag, 'label' => $label,
-                                   'value' => true));
+         $this->addTagToList(['tag'   => $tag, 'label' => $label,
+                                   'value' => true]);
       }
 
-      $this->addTagToList(array('tag'     => 'domains',
+      $this->addTagToList(['tag'     => 'domains',
                                 'label'   => __('Expired or expiring domains', 'domains'),
                                 'value'   => false,
                                 'foreach' => true,
-                                'events'  => array('DomainsWhichExpire', 'ExpiredDomains')));
+                                'events'  => ['DomainsWhichExpire', 'ExpiredDomains']]);
 
       asort($this->tag_descriptions);
    }

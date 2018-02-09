@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of domains.
 
  domains is free software; you can redistribute it and/or modify
@@ -29,10 +29,12 @@
 
 include('../../../inc/includes.php');
 
-if (!isset($_GET["id"]))
+if (!isset($_GET["id"])) {
    $_GET["id"] = "";
-if (!isset($_GET["withtemplate"]))
+}
+if (!isset($_GET["withtemplate"])) {
    $_GET["withtemplate"] = "";
+}
 
 $domain = new PluginDomainsDomain();
 $domain_item = new PluginDomainsDomain_Item();
@@ -74,7 +76,7 @@ if (isset($_POST["add"])) {
 
 } else if (isset($_POST["deleteitem"])) {
    foreach ($_POST["item"] as $key => $val) {
-      $input = array('id' => $key);
+      $input = ['id' => $key];
       if ($val == 1) {
          $domain_item->check($key, UPDATE);
          $domain_item->delete($input);
@@ -83,7 +85,7 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else if (isset($_POST["deletedomains"])) {
-   $input = array('id' => $_POST["id"]);
+   $input = ['id' => $_POST["id"]];
    $domain_item->check($_POST["id"], UPDATE);
    $domain_item->delete($input);
    Html::back();

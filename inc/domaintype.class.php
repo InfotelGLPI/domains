@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of domains.
 
  domains is free software; you can redistribute it and/or modify
@@ -42,8 +42,7 @@ class PluginDomainsDomainType extends CommonDropdown
     * @param int $nb
     * @return translated
     */
-   static function getTypeName($nb = 0)
-   {
+   static function getTypeName($nb = 0) {
 
       return _n('Domain type', 'Domain types', $nb, 'domains');
    }
@@ -55,8 +54,7 @@ class PluginDomainsDomainType extends CommonDropdown
     * @param $entity
     * @return ID|int|the
     */
-   static function transfer($ID, $entity)
-   {
+   static function transfer($ID, $entity) {
       global $DB;
 
       if ($ID > 0) {

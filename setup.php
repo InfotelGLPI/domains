@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of domains.
 
  domains is free software; you can redistribute it and/or modify
@@ -32,12 +32,12 @@ function plugin_init_domains() {
    global $PLUGIN_HOOKS;
 
    $PLUGIN_HOOKS['csrf_compliant']['domains']   = true;
-   $PLUGIN_HOOKS['change_profile']['domains']   = array('PluginDomainsProfile', 'initProfile');
+   $PLUGIN_HOOKS['change_profile']['domains']   = ['PluginDomainsProfile', 'initProfile'];
    $PLUGIN_HOOKS['assign_to_ticket']['domains'] = true;
 
    if (Session::getLoginUserID()) {
 
-      Plugin::registerClass('PluginDomainsDomain', array(
+      Plugin::registerClass('PluginDomainsDomain', [
          'linkuser_tech_types'         => true,
          'linkgroup_tech_types'        => true,
          'document_types'              => true,
@@ -46,22 +46,22 @@ function plugin_init_domains() {
          'helpdesk_visible_types'      => true,
          'notificationtemplates_types' => true,
          'link_types'                  => true
-      ));
+      ]);
 
       Plugin::registerClass('PluginDomainsConfig',
-                            array('addtabon' => 'CronTask'));
+                            ['addtabon' => 'CronTask']);
 
       Plugin::registerClass('PluginDomainsProfile',
-                            array('addtabon' => 'Profile'));
+                            ['addtabon' => 'Profile']);
 
       Plugin::registerClass('PluginDomainsDomain',
-                            array('addtabon' => 'Supplier'));
+                            ['addtabon' => 'Supplier']);
 
       $plugin = new Plugin();
       if (!$plugin->isActivated('environment')
           && Session::haveRight("plugin_domains", READ)) {
 
-         $PLUGIN_HOOKS['menu_toadd']['domains'] = array('assets' => 'PluginDomainsMenu');
+         $PLUGIN_HOOKS['menu_toadd']['domains'] = ['assets' => 'PluginDomainsMenu'];
       }
 
       if (Session::haveRight("plugin_domains", CREATE)) {
@@ -90,7 +90,7 @@ function plugin_init_domains() {
  */
 function plugin_version_domains() {
 
-   return array(
+   return [
       'name'           => _n('Domain', 'Domains', 2, 'domains'),
       'version'        => '1.9.0',
       'oldname'        => 'domain',
@@ -98,7 +98,7 @@ function plugin_version_domains() {
       'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
       'homepage'       => 'https://github.com/InfotelGLPI/domains',
       'minGlpiVersion' => '9.2',// For compatibility / no install in version < 9.
-   );
+   ];
 
 }
 

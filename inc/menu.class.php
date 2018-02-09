@@ -10,7 +10,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of domains.
 
  domains is free software; you can redistribute it and/or modify
@@ -38,18 +38,16 @@ class PluginDomainsMenu extends CommonGLPI
    /**
     * @return translated
     */
-   static function getMenuName()
-   {
+   static function getMenuName() {
       return _n('Domain', 'Domains', 2, 'domains');
    }
 
    /**
     * @return array
     */
-   static function getMenuContent()
-   {
+   static function getMenuContent() {
 
-      $menu = array();
+      $menu = [];
       $menu['title'] = self::getMenuName();
       $menu['page'] = "/plugins/domains/front/domain.php";
       $menu['links']['search'] = PluginDomainsDomain::getSearchURL(false);
@@ -57,12 +55,10 @@ class PluginDomainsMenu extends CommonGLPI
          $menu['links']['add'] = PluginDomainsDomain::getFormURL(false);
       }
 
-
       return $menu;
    }
 
-   static function removeRightsFromSession()
-   {
+   static function removeRightsFromSession() {
       if (isset($_SESSION['glpimenu']['assets']['types']['PluginDomainsMenu'])) {
          unset($_SESSION['glpimenu']['assets']['types']['PluginDomainsMenu']);
       }
