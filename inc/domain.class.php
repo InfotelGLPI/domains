@@ -108,100 +108,152 @@ class PluginDomainsDomain extends CommonDBTM {
    /**
     * @return array
     */
-   function getSearchOptions() {
+   function rawSearchOptions() {
 
       $tab = [];
 
-      $tab['common'] = self::getTypeName(2);
+      $tab[] = [
+         'id'                 => 'common',
+         'name'               => self::getTypeName(2)
+      ];
 
-      $tab[1]['table']         = $this->getTable();
-      $tab[1]['field']         = 'name';
-      $tab[1]['name']          = __('Name');
-      $tab[1]['datatype']      = 'itemlink';
-      $tab[1]['itemlink_type'] = $this->getType();
+      $tab[] = [
+         'id'                 => '1',
+         'table'              => $this->getTable(),
+         'field'              => 'name',
+         'name'               => __('Name'),
+         'datatype'           => 'itemlink',
+         'itemlink_type'      => $this->getType(),
+      ];
 
-      $tab[2]['table']    = 'glpi_plugin_domains_domaintypes';
-      $tab[2]['field']    = 'name';
-      $tab[2]['name']     = __('Type');
-      $tab[2]['datatype'] = 'dropdown';
+      $tab[] = [
+         'id'                 => '2',
+         'table'              => 'glpi_plugin_domains_domaintypes',
+         'field'              => 'name',
+         'name'               => __('Type'),
+         'datatype'           => 'dropdown'
+      ];
 
-      $tab[3]['table']     = 'glpi_users';
-      $tab[3]['field']     = 'name';
-      $tab[3]['linkfield'] = 'users_id_tech';
-      $tab[3]['name']      = __('Technician in charge of the hardware');
-      $tab[3]['datatype']  = 'dropdown';
+      $tab[] = [
+         'id'                 => '3',
+         'table'              => 'glpi_users',
+         'field'              => 'name',
+         'linkfield'          => 'users_id_tech',
+         'name'               => __('Technician in charge of the hardware'),
+         'datatype'           => 'dropdown'
+      ];
 
-      $tab[4]['table']         = 'glpi_suppliers';
-      $tab[4]['field']         = 'name';
-      $tab[4]['name']          = __('Supplier');
-      $tab[4]['datatype']      = 'itemlink';
-      $tab[4]['itemlink_type'] = 'Supplier';
-      $tab[4]['forcegroupby']  = true;
-      $tab[4]['datatype']      = 'dropdown';
+      $tab[] = [
+         'id'                 => '4',
+         'table'              => 'glpi_suppliers',
+         'field'              => 'name',
+         'name'               => __('Supplier'),
+         'datatype'           => 'dropdown',
+         'itemlink_type'      => 'Supplier',
+         'forcegroupby'       => true
+      ];
 
-      $tab[5]['table']    = $this->getTable();
-      $tab[5]['field']    = 'date_creation';
-      $tab[5]['name']     = __('Creation date');
-      $tab[5]['datatype'] = 'date';
+      $tab[] = [
+         'id'                 => '5',
+         'table'              => $this->getTable(),
+         'field'              => 'date_creation',
+         'name'               => __('Creation date'),
+         'datatype'           => 'date'
+      ];
 
-      $tab[6]['table']    = $this->getTable();
-      $tab[6]['field']    = 'date_expiration';
-      $tab[6]['name']     = __('Expiration date');
-      $tab[6]['datatype'] = 'date';
+      $tab[] = [
+         'id'                 => '6',
+         'table'              => $this->getTable(),
+         'field'              => 'date_expiration',
+         'name'               => __('Expiration date'),
+         'datatype'           => 'date'
+      ];
 
-      $tab[7]['table']    = $this->getTable();
-      $tab[7]['field']    = 'comment';
-      $tab[7]['name']     = __('Comments');
-      $tab[7]['datatype'] = 'text';
+      $tab[] = [
+         'id'                 => '7',
+         'table'              => $this->getTable(),
+         'field'              => 'comment',
+         'name'               => __('Comments'),
+         'datatype'           => 'text'
+      ];
 
-      $tab[8]['table']         = 'glpi_plugin_domains_domains_items';
-      $tab[8]['field']         = 'items_id';
-      $tab[8]['nosearch']      = true;
-      $tab[8]['massiveaction'] = false;
-      $tab[8]['name']          = _n('Associated item', 'Associated items', 2);
-      $tab[8]['forcegroupby']  = true;
-      $tab[8]['joinparams']    = ['jointype' => 'child'];
+      $tab[] = [
+         'id'                 => '8',
+         'table'              => 'glpi_plugin_domains_domains_items',
+         'field'              => 'items_id',
+         'nosearch'           => true,
+         'massiveaction'      => false,
+         'name'               => _n('Associated items', 'Associated items', 2),
+         'forcegroupby'       => true,
+         'joinparams'         => [
+            'jointype'           => 'child'
+         ]
+      ];
 
-      $tab[9]['table'] = $this->getTable();
-      $tab[9]['field'] = 'others';
-      $tab[9]['name']  = __('Others');
+      $tab[] = [
+         'id'                 => '9',
+         'table'              => $this->getTable(),
+         'field'              => 'others',
+         'name'               => __('Others')
+      ];
 
-      $tab[10]['table']     = 'glpi_groups';
-      $tab[10]['field']     = 'name';
-      $tab[10]['linkfield'] = 'groups_id_tech';
-      $tab[10]['name']      = __('Group in charge of the hardware');
-      $tab[10]['condition'] = '`is_assign`';
-      $tab[10]['datatype']  = 'dropdown';
+      $tab[] = [
+         'id'                 => '10',
+         'table'              => 'glpi_groups',
+         'field'              => 'name',
+         'linkfield'          => 'groups_id_tech',
+         'name'               => __('Group in charge of the hardware'),
+         'condition'          => '`is_assign`',
+         'datatype'           => 'dropdown'
+      ];
 
-      $tab[11]['table']    = $this->getTable();
-      $tab[11]['field']    = 'is_helpdesk_visible';
-      $tab[11]['name']     = __('Associable to a ticket');
-      $tab[11]['datatype'] = 'bool';
+      $tab[] = [
+         'id'                 => '11',
+         'table'              => $this->getTable(),
+         'field'              => 'is_helpdesk_visible',
+         'name'               => __('Associable to a ticket'),
+         'datatype'           => 'bool'
+      ];
 
-      $tab[12]['table']         = $this->getTable();
-      $tab[12]['field']         = 'date_mod';
-      $tab[12]['massiveaction'] = false;
-      $tab[12]['name']          = __('Last update');
-      $tab[12]['datatype']      = 'datetime';
+      $tab[] = [
+         'id'                 => '12',
+         'table'              => $this->getTable(),
+         'field'              => 'date_mod',
+         'massiveaction'      => false,
+         'name'               => __('Last update'),
+         'datatype'           => 'datetime'
+      ];
 
-      $tab[18]['table']    = $this->getTable();
-      $tab[18]['field']    = 'is_recursive';
-      $tab[18]['name']     = __('Child entities');
-      $tab[18]['datatype'] = 'bool';
+      $tab[] = [
+         'id'                 => '18',
+         'table'              => $this->getTable(),
+         'field'              => 'is_recursive',
+         'name'               => __('Child entities'),
+         'datatype'           => 'bool'
+      ];
 
-      $tab[30]['table']    = $this->getTable();
-      $tab[30]['field']    = 'id';
-      $tab[30]['name']     = __('ID');
-      $tab[30]['datatype'] = 'number';
+      $tab[] = [
+         'id'                 => '30',
+         'table'              => $this->getTable(),
+         'field'              => 'id',
+         'name'               => __('ID'),
+         'datatype'           => 'number'
+      ];
 
-      $tab[80]['table']    = 'glpi_entities';
-      $tab[80]['field']    = 'completename';
-      $tab[80]['name']     = __('Entity');
-      $tab[80]['datatype'] = 'dropdown';
+      $tab[] = [
+         'id'                 => '80',
+         'table'              => 'glpi_entities',
+         'field'              => 'completename',
+         'name'               => __('Entity'),
+         'datatype'           => 'dropdown'
+      ];
 
-      $tab[81]['table'] = 'glpi_entities';
-      $tab[81]['field'] = 'entities_id';
-      $tab[81]['name']  = __('Entity') . "-" . __('ID');
+      $tab[] = [
+         'id'                 => '81',
+         'table'              => 'glpi_entities',
+         'field'              => 'entities_id',
+         'name'               => __('Entity-ID')
+      ];
 
       return $tab;
    }
