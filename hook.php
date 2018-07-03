@@ -41,7 +41,7 @@ function plugin_domains_install() {
    if (!$DB->tableExists("glpi_plugin_domain") && !$DB->tableExists("glpi_plugin_domains_domains")) {
 
       $install = true;
-      $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/empty-1.8.0.sql");
+      $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/empty-2.0.0.sql");
 
    } else if ($DB->tableExists("glpi_plugin_domain") && !$DB->fieldExists("glpi_plugin_domain", "recursive")) {
 
