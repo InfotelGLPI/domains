@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Domains Development Team
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the GLPI - Domains plugin package.
 # 
 # Translators:
 # Daniel Fallenstein <daniel@fallenste.in>, 2015
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - domains plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-10 09:06+0200\n"
+"POT-Creation-Date: 2018-07-03 07:58+0200\n"
 "PO-Revision-Date: 2017-10-10 07:21+0000\n"
 "Last-Translator: Amandine Manceau\n"
 "Language-Team: German (Germany) (http://www.transifex.com/tsmr/GLPI_domains/language/de_DE/)\n"
@@ -18,46 +18,46 @@ msgstr ""
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: hook.php:424 inc/domain.class.php:912 inc/domain_item.class.php:563
+#: hook.php:431 inc/domain.class.php:968 inc/domain_item.class.php:565
 msgid "Does not expire"
 msgstr "Läuft nicht ab"
 
-#: hook.php:493 inc/domain_item.class.php:481
+#: hook.php:504 inc/domain_item.class.php:483
 msgid "Associate a domain"
 msgstr "Eine Domain verknüpfen"
 
-#: setup.php:94 inc/domain.class.php:54 inc/menu.class.php:43
+#: setup.php:94 inc/domain.class.php:54 inc/menu.class.php:42
 #: inc/profile.class.php:175
 msgid "Domain"
 msgid_plural "Domains"
 msgstr[0] "Domain"
 msgstr[1] "Domains"
 
-#: inc/config.class.php:49
+#: inc/config.class.php:48
 msgid "Plugin Setup"
 msgstr "Plugin einrichten"
 
-#: inc/config.class.php:86
+#: inc/config.class.php:83
 msgid "Time of checking of validity of domains"
 msgstr "Zeitpunkt für die Gültigkeitsprüfung der Domains"
 
-#: inc/config.class.php:95 inc/domain.class.php:708
+#: inc/config.class.php:92 inc/domain.class.php:764
 msgid "Domains expired since more"
 msgstr "Domains die abgelaufen sind seit mehr als"
 
-#: inc/config.class.php:99
+#: inc/config.class.php:96
 msgid "Domains expiring in less than"
 msgstr "Domains die ablaufen in weniger als"
 
-#: inc/domain.class.php:326
+#: inc/domain.class.php:382
 msgid "Empty for infinite"
 msgstr ""
 
-#: inc/domain.class.php:628 inc/notificationtargetdomain.class.php:86
+#: inc/domain.class.php:684 inc/notificationtargetdomain.class.php:86
 msgid "Expired or expiring domains"
 msgstr "Abgelaufene oder ablaufende Domains"
 
-#: inc/domaintype.class.php:48
+#: inc/domaintype.class.php:47
 msgid "Domain type"
 msgid_plural "Domain types"
 msgstr[0] ""

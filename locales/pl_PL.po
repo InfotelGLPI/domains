@@ -3,73 +3,77 @@
 # This file is distributed under the same license as the GLPI - Domains plugin package.
 # 
 # Translators:
-# Matthieu Hal, 2017
-# Rafael Fontenelle <rffontenelle@gmail.com>, 2013
+# luk4s <kelevan@gmail.com>, 2018
+# luk4s <kelevan@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - domains plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-03 07:58+0200\n"
-"PO-Revision-Date: 2017-10-10 07:21+0000\n"
-"Last-Translator: Amandine Manceau\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/tsmr/GLPI_domains/language/pt_BR/)\n"
+"PO-Revision-Date: 2018-05-03 18:41+0000\n"
+"Last-Translator: luk4s <kelevan@gmail.com>\n"
+"Language-Team: Polish (Poland) (http://www.transifex.com/tsmr/GLPI_domains/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: hook.php:431 inc/domain.class.php:968 inc/domain_item.class.php:565
 msgid "Does not expire"
-msgstr "Não expira"
+msgstr "Nie wygasa"
 
 #: hook.php:504 inc/domain_item.class.php:483
 msgid "Associate a domain"
-msgstr "Associar um domínio"
+msgstr "Powiąż z domeną"
 
 #: setup.php:94 inc/domain.class.php:54 inc/menu.class.php:42
 #: inc/profile.class.php:175
 msgid "Domain"
 msgid_plural "Domains"
-msgstr[0] "Domínio"
-msgstr[1] "Domínios"
+msgstr[0] "Domena"
+msgstr[1] "Domeny"
+msgstr[2] "Domeny"
+msgstr[3] "Domeny"
 
 #: inc/config.class.php:48
 msgid "Plugin Setup"
-msgstr "Configuração do plug-in"
+msgstr "Ustawienia wtyczki"
 
 #: inc/config.class.php:83
 msgid "Time of checking of validity of domains"
-msgstr "Intervalo entre verificação de validade dos domínios"
+msgstr "Czas sprawdzania ważności domen"
 
 #: inc/config.class.php:92 inc/domain.class.php:764
 msgid "Domains expired since more"
-msgstr "Domínios expirados a mais de"
+msgstr "Domeny wygasłe od ponad"
 
 #: inc/config.class.php:96
 msgid "Domains expiring in less than"
-msgstr "Domínios expirando em menos de"
+msgstr "Domeny wygasające w mniej niż"
 
 #: inc/domain.class.php:382
 msgid "Empty for infinite"
-msgstr "Vazio para infinito"
+msgstr "Puste gdy nie wygasa"
 
 #: inc/domain.class.php:684 inc/notificationtargetdomain.class.php:86
 msgid "Expired or expiring domains"
-msgstr "Domínios expirando ou expirados"
+msgstr "Wygasłe lub wygasające domeny"
 
 #: inc/domaintype.class.php:47
 msgid "Domain type"
 msgid_plural "Domain types"
-msgstr[0] "Tipos de domínio"
-msgstr[1] "Tipo de domínios"
+msgstr[0] "Typ domeny"
+msgstr[1] "Typy domen"
+msgstr[2] "Typy domen"
+msgstr[3] "Typy domen"
 
 #: inc/notificationtargetdomain.class.php:43
 #: inc/notificationtargetdomain.class.php:57
 msgid "Expired domains"
-msgstr "Domínios expirados"
+msgstr "Wygasłe domeny"
 
 #: inc/notificationtargetdomain.class.php:44
 #: inc/notificationtargetdomain.class.php:58
 msgid "Expiring domains"
-msgstr "Domínios expirando"
+msgstr "Wygasające domeny"

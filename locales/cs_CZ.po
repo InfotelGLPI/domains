@@ -1,77 +1,80 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Domains Development Team
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the GLPI - Domains plugin package.
 # 
 # Translators:
 # David Stepan <stepand@tiscali.cz>, 2015
 # Ondrej Krejcik <ondra@tachec.org>, 2013
+# Pavel Borecki <pavel.borecki@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - domains plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-10 09:06+0200\n"
-"PO-Revision-Date: 2017-10-10 07:21+0000\n"
-"Last-Translator: Amandine Manceau\n"
+"POT-Creation-Date: 2018-07-03 07:58+0200\n"
+"PO-Revision-Date: 2018-06-26 11:52+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/tsmr/GLPI_domains/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs_CZ\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: hook.php:424 inc/domain.class.php:912 inc/domain_item.class.php:563
+#: hook.php:431 inc/domain.class.php:968 inc/domain_item.class.php:565
 msgid "Does not expire"
-msgstr "bez expirace"
+msgstr "Platnost neskončí"
 
-#: hook.php:493 inc/domain_item.class.php:481
+#: hook.php:504 inc/domain_item.class.php:483
 msgid "Associate a domain"
 msgstr "Přiřadit doménu"
 
-#: setup.php:94 inc/domain.class.php:54 inc/menu.class.php:43
+#: setup.php:94 inc/domain.class.php:54 inc/menu.class.php:42
 #: inc/profile.class.php:175
 msgid "Domain"
 msgid_plural "Domains"
 msgstr[0] "Doména"
 msgstr[1] "Domény"
 msgstr[2] "Domén"
+msgstr[3] "Domény"
 
-#: inc/config.class.php:49
+#: inc/config.class.php:48
 msgid "Plugin Setup"
-msgstr "Nastavení pluginu"
+msgstr "Nastavení zásuvného modulu"
 
-#: inc/config.class.php:86
+#: inc/config.class.php:83
 msgid "Time of checking of validity of domains"
-msgstr "Časové období kontroly platnosti domén"
+msgstr "Perioda kontroly platnosti domén"
 
-#: inc/config.class.php:95 inc/domain.class.php:708
+#: inc/config.class.php:92 inc/domain.class.php:764
 msgid "Domains expired since more"
-msgstr "Domény, jejichž platnost vypršela za předchozích"
+msgstr "Domény u kterých platnost skončila před více než"
 
-#: inc/config.class.php:99
+#: inc/config.class.php:96
 msgid "Domains expiring in less than"
-msgstr "Domény, jejichž platnost vyprší v období následujících"
+msgstr "Domény u kterých platnost skončí za méně než"
 
-#: inc/domain.class.php:326
+#: inc/domain.class.php:382
 msgid "Empty for infinite"
-msgstr "Prázdné pro nekonečno"
+msgstr "Nevyplněné znamená nekonečno"
 
-#: inc/domain.class.php:628 inc/notificationtargetdomain.class.php:86
+#: inc/domain.class.php:684 inc/notificationtargetdomain.class.php:86
 msgid "Expired or expiring domains"
-msgstr "Prošlá nebo právě procházející platnost domén"
+msgstr "Domény se skončenou nebo právě končící platností"
 
-#: inc/domaintype.class.php:48
+#: inc/domaintype.class.php:47
 msgid "Domain type"
 msgid_plural "Domain types"
 msgstr[0] "Typ domény"
 msgstr[1] "Typy domén"
 msgstr[2] "Typů domén"
+msgstr[3] "Typy domén"
 
 #: inc/notificationtargetdomain.class.php:43
 #: inc/notificationtargetdomain.class.php:57
 msgid "Expired domains"
-msgstr "Domény s prošlou platností"
+msgstr "Domény kterým skončila platnost"
 
 #: inc/notificationtargetdomain.class.php:44
 #: inc/notificationtargetdomain.class.php:58
 msgid "Expiring domains"
-msgstr "Domény s právě procházející platností"
+msgstr "Domény kterým končí platnost"
