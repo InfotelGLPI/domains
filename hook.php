@@ -452,15 +452,16 @@ function plugin_domains_giveItem($type, $ID, $data, $num) {
                   continue;
                }
                $item = new $itemtype();
+               $dbu  = new DbUtils();
                if ($item->canView()) {
-                  $table_item = getTableForItemType($itemtype);
+                  $table_item = $dbu->getTableForItemType($itemtype);
                   $query      = "SELECT `" . $table_item . "`.*, `glpi_entities`.`ID` AS entity "
                                 . " FROM `glpi_plugin_domains_domains_items`, `" . $table_item
                                 . "` LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `" . $table_item . "`.`entities_id`) "
                                 . " WHERE `" . $table_item . "`.`id` = `glpi_plugin_domains_domains_items`.`items_id`
                   AND `glpi_plugin_domains_domains_items`.`itemtype` = '$itemtype'
                   AND `glpi_plugin_domains_domains_items`.`plugin_domains_domains_id` = '" . $domains . "' "
-                                . getEntitiesRestrictRequest(" AND ", $table_item, '', '', $item->maybeRecursive());
+                                . $dbu->getEntitiesRestrictRequest(" AND ", $table_item, '', '', $item->maybeRecursive());
 
                   if ($item->maybeTemplate()) {
                      $query .= " AND `" . $table_item . "`.`is_template` = '0'";

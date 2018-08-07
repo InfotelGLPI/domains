@@ -208,6 +208,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
       }
       $canedit = $domain->can($instID, UPDATE);
       $rand    = mt_rand();
+      $dbu     = new DbUtils();
 
       $query = "SELECT DISTINCT `itemtype`
             FROM `glpi_plugin_domains_domains_items`
@@ -238,7 +239,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
                                                      'itemtypes'     => PluginDomainsDomain::getTypes(true),
                                                      'entity_restrict'
                                                                      => ($domain->fields['is_recursive']
-                                                        ? getSonsOf('glpi_entities',
+                                                        ? $dbu->getSonsOf('glpi_entities',
                                                                     $domain->fields['entities_id'])
                                                                      : $domain->fields['entities_id']),
                                                      'checkright'
@@ -278,14 +279,14 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
       for ($i = 0; $i < $number; $i++) {
          $itemtype = $DB->result($result, $i, "itemtype");
 
-         if (!($item = getItemForItemtype($itemtype))) {
+         if (!($item = $dbu->getItemForItemtype($itemtype))) {
             continue;
          }
 
          if ($item->canView()) {
             $column = "name";
 
-            $itemTable = getTableForItemType($itemtype);
+            $itemTable = $dbu->getTableForItemType($itemtype);
             $query     = " SELECT `" . $itemTable . "`.*,
                               `glpi_plugin_domains_domains_items`.`id` AS items_id,
                               `glpi_entities`.id AS entity "
@@ -295,7 +296,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
                          . " WHERE `" . $itemTable . "`.`id` = `glpi_plugin_domains_domains_items`.`items_id`
                      AND `glpi_plugin_domains_domains_items`.`itemtype` = '$itemtype'
                      AND `glpi_plugin_domains_domains_items`.`plugin_domains_domains_id` = '$instID' "
-                         . getEntitiesRestrictRequest(" AND ", $itemTable, '', '', $item->maybeRecursive());
+                         . $dbu->getEntitiesRestrictRequest(" AND ", $itemTable, '', '', $item->maybeRecursive());
 
             if ($item->maybeTemplate()) {
                $query .= " AND " . $itemTable . ".is_template='0'";
@@ -401,6 +402,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
       $canedit      = $item->canAddItem('PluginDomainsDomain');
       $rand         = mt_rand();
       $is_recursive = $item->isRecursive();
+      $dbu          = new DbUtils();
 
       $query = "SELECT `glpi_plugin_domains_domains_items`.`id` AS assocID,
                        `glpi_entities`.`id` AS entity,
@@ -413,7 +415,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
                 WHERE `glpi_plugin_domains_domains_items`.`items_id` = '$ID'
                       AND `glpi_plugin_domains_domains_items`.`itemtype` = '" . $item->getType() . "' ";
 
-      $query .= getEntitiesRestrictRequest(" AND", "glpi_plugin_domains_domains", '', '', true);
+      $query .= $dbu->getEntitiesRestrictRequest(" AND", "glpi_plugin_domains_domains", '', '', true);
 
       $query .= " ORDER BY `assocName`";
 
@@ -443,12 +445,12 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
             }
 
             if ($item->isRecursive()) {
-               $entities = getSonsOf('glpi_entities', $entity);
+               $entities = $dbu->getSonsOf('glpi_entities', $entity);
             } else {
                $entities = $entity;
             }
          }
-         $limit = getEntitiesRestrictRequest(" AND ", "glpi_plugin_domains_domains", '', $entities, true);
+         $limit = $dbu->getEntitiesRestrictRequest(" AND ", "glpi_plugin_domains_domains", '', $entities, true);
          $q     = "SELECT COUNT(*)
                FROM `glpi_plugin_domains_domains`
                WHERE `is_deleted` = '0'
@@ -554,7 +556,7 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
                echo " (" . $data["suppliers_id"] . ")";
             }
             echo "</a></td>";
-            echo "<td class='center'>" . getUserName($data["users_id_tech"]) . "</td>";
+            echo "<td class='center'>" . $dbu->getUserName($data["users_id_tech"]) . "</td>";
             echo "<td class='center'>" . Dropdown::getDropdownName("glpi_plugin_domains_domaintypes", $data["plugin_domains_domaintypes_id"]) . "</td>";
             echo "<td class='center'>" . Html::convDate($data["date_creation"]) . "</td>";
             if ($data["date_expiration"] <= date('Y-m-d')

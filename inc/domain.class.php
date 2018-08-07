@@ -461,9 +461,10 @@ class PluginDomainsDomain extends CommonDBTM {
       }
 
       $rand = mt_rand();
+      $dbu = new DbUtils();
 
       $where = " WHERE `glpi_plugin_domains_domains`.`is_deleted` = '0' ";
-      $where .= getEntitiesRestrictRequest("AND", 'glpi_plugin_domains_domains', '', $p['entity'], true);
+      $where .= $dbu->getEntitiesRestrictRequest("AND", 'glpi_plugin_domains_domains', '', $p['entity'], true);
 
       if (count($p['used'])) {
          $where .= " AND `id` NOT IN (0, " . implode(",", $p['used']) . ")";
@@ -510,10 +511,11 @@ class PluginDomainsDomain extends CommonDBTM {
    }
 
    //Massive action
+
    /**
     * @param null $checkitem
     *
-    * @return an
+    * @return array
     */
    function getSpecificMassiveActions($checkitem = null) {
       $isadmin = static::canUpdate();
@@ -882,6 +884,8 @@ class PluginDomainsDomain extends CommonDBTM {
       }
       $withtemplate = 0;
 
+      $dbu = new DbUtils();
+
       $query = "SELECT `glpi_plugin_domains_domains`.`id` AS assocID,
                        `glpi_entities`.`id` AS entity,
                        `glpi_plugin_domains_domains`.`name` AS assocName,
@@ -889,7 +893,7 @@ class PluginDomainsDomain extends CommonDBTM {
                . "FROM `glpi_plugin_domains_domains` "
                . " LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `glpi_plugin_domains_domains`.`entities_id`) "
                . " WHERE `suppliers_id` = '$ID' "
-               . getEntitiesRestrictRequest(" AND ", "glpi_plugin_domains_domains", '', '', true);
+               . $dbu->getEntitiesRestrictRequest(" AND ", "glpi_plugin_domains_domains", '', '', true);
       $query .= " ORDER BY `assocName` ";
 
       $result = $DB->query($query);
@@ -957,7 +961,7 @@ class PluginDomainsDomain extends CommonDBTM {
                echo " (" . $data["suppliers_id"] . ")";
             }
             echo "</a></td>";
-            echo "<td class='center'>" . getUserName($data["users_id_tech"]) . "</td>";
+            echo "<td class='center'>" . $dbu->getUserName($data["users_id_tech"]) . "</td>";
             echo "<td class='center'>" . Dropdown::getDropdownName("glpi_plugin_domains_domaintypes", $data["plugin_domains_domaintypes_id"]) . "</td>";
             echo "<td class='center'>" . Html::convDate($data["date_creation"]) . "</td>";
             if ($data["date_expiration"] <= date('Y-m-d')
