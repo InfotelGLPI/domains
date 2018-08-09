@@ -93,7 +93,8 @@ class PluginDomainsDomain extends CommonDBTM {
     */
    static function countForItem(CommonDBTM $item) {
       $dbu = new DbUtils();
-      return $dbu->countElementsInTable('glpi_plugin_domains_domains', "`suppliers_id` = '" . $item->getID() . "'");
+      return $dbu->countElementsInTable('glpi_plugin_domains_domains',
+                                        ["suppliers_id" => $item->getID()]);
    }
 
    /**

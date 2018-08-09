@@ -116,14 +116,15 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
     */
    static function countForDomain(PluginDomainsDomain $item) {
 
-      $types = implode("','", $item->getTypes());
-      if (empty($types)) {
+      $types = $item->getTypes();
+      if (count($types) == 0) {
          return 0;
       }
       $dbu = new DbUtils();
       return $dbu->countElementsInTable('glpi_plugin_domains_domains_items',
-                                        "`itemtype` IN ('$types')
-                                   AND `plugin_domains_domains_id` = '" . $item->getID() . "'");
+                                        ["plugin_domains_domains_id" => $item->getID(),
+                                         "itemtype"                  => $types
+                                        ]);
    }
 
 
@@ -135,8 +136,8 @@ class PluginDomainsDomain_Item extends CommonDBRelation {
    static function countForItem(CommonDBTM $item) {
       $dbu = new DbUtils();
       return $dbu->countElementsInTable('glpi_plugin_domains_domains_items',
-                                        "`itemtype`='" . $item->getType() . "'
-                                   AND `items_id` = '" . $item->getID() . "'");
+                                        ["itemtype" => $item->getType(),
+                                         "items_id" => $item->getID()]);
    }
 
    /**
