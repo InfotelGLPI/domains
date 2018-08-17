@@ -6,12 +6,14 @@
     <logo>https://raw.githubusercontent.com/InfotelGLPI/domains/master/domains.png</logo>
     <description>
         <short>
-            <fr><![CDATA[Gestion de noms de domaines. Ce plugin vous permet de gérer les noms de domaines de votre réseau et de les associer à des éléments de l’inventaire.<br />Un système d'alertes mail permet de vérifier les noms de domaines qui vont ou qui ont expirés.]]></fr>
+            <cs><![CDATA[Správa doménových názvů. Tento zásuvný modul umožňuje spravovat domény na vaší síti a přiřazovat je k prvkům v inventáři.<br />Systém posílání e-mailů umožňuje ověřovat doménové názvy, kterým končí nebo už skončila platnost.]]></cs>
             <en><![CDATA[Domain names management. This plugin enables you to manage the domain names of your network and associate them with elements of the inventory.<br />A mailing system allow to verify already expired or soon expired domain names.]]></en>
+            <fr><![CDATA[Gestion de noms de domaines. Ce plugin vous permet de gérer les noms de domaines de votre réseau et de les associer à des éléments de l’inventaire.<br />Un système d'alertes mail permet de vérifier les noms de domaines qui vont ou qui ont expirés.]]></fr>
         </short>
         <long>
-            <fr><![CDATA[Ce plugin vous permet de gérer les noms de domaines de votre réseau et de les associer à des éléments de l’inventaire.<br />Un système d'alertes mail permet de vérifier les noms de domaines qui vont ou qui ont expirés.<br />-Utilisable depuis le helpdesk<br />-Peut être intégré au plugin environment.]]></fr>
+            <cs><![CDATA[Tento zásuvný modul umožňuje spravovat domény na vaší síti a přiřazovat je k prvkům v inventáři.<br />Systém posílání e-mailů umožňuje ověřovat doménové názvy, kterým končí nebo už skončila platnost.<br />-Je možné používat se službou podpory<br />- Je možné začlenit do zásuvného modulu Prostředí.]]></cs>
             <en><![CDATA[This plugin enables you to manage the domain names of your network and associate them with elements of the inventory.<br />A mailing system allow to verify already expired or soon expired domain names.<br />-Can be used with helpdesk<br />-Can be integrated into Environment plugin.]]></en>
+            <fr><![CDATA[Ce plugin vous permet de gérer les noms de domaines de votre réseau et de les associer à des éléments de l’inventaire.<br />Un système d'alertes mail permet de vérifier les noms de domaines qui vont ou qui ont expirés.<br />-Utilisable depuis le helpdesk<br />-Peut être intégré au plugin environment.]]></fr>
         </long>
     </description>
     <homepage>https://github.com/InfotelGLPI/domains</homepage>
@@ -106,22 +108,27 @@
         <lang>en_US</lang>
         <lang>es_ES</lang>
         <lang>fr_FR</lang>
+        <lang>pl_PL</lang>
         <lang>pt_BR</lang>
         <lang>ru_RU</lang>
         <lang>tr_TR</lang>
-        <lang>pl_PL</lang>
     </langs>
     <license><![CDATA[GPL v2+]]></license>
     <tags>
-        <fr>
-            <tag>Domaines</tag>
-            <tag>Inventaire</tag>
-            <tag>Gestion</tag>
-        </fr>
+        <cs>
+            <tag>Domény</tag>
+            <tag>Inventář</tag>
+            <tag>Správa</tag>
+        </cs>
         <en>
             <tag>Domaines</tag>
             <tag>Inventory</tag>
             <tag>Management</tag>
         </en>
+        <fr>
+            <tag>Domaines</tag>
+            <tag>Inventaire</tag>
+            <tag>Gestion</tag>
+        </fr>
     </tags>
 </root>
