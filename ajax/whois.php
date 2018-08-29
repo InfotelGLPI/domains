@@ -1,76 +1,101 @@
 <?php
 /*
- * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
- -------------------------------------------------------------------------
- domains plugin for GLPI
- Copyright (C) 2009-2018 by the domains Development Team and teicee team
-
- https://github.com/InfotelGLPI/domains: original code
- https://github.com/teicee/domains: fork is there. It is only intended to make pull requests
- -------------------------------------------------------------------------
-
- LICENSE
-      
- This file is part of domains.
-
- domains is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- domains is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with domains. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+ *
+ * This code was developped by teicee based on other PHP code already developped by other GLPI and/or domains plugin developpers
+ * Last update: 29-AUG-2018
+ * Main developper: Philippe Chauvat
+ * The license for this code is the same one used for the 'domains' plugin
+ *
+ * This PHP function requests the whois databases and mainly return dates
+ * Caution: The date format is not always clear:
+ * - how can we figure out if 08/06/2018 is 06-AUG-2018 or 08-JUN-2018?
  */
 if (strpos($_SERVER['PHP_SELF'], "whois.php")) {
-   $AJAX_INCLUDE = 1;
-   include('../../../inc/includes.php');
-   header("Content-Type: application/json; charset=UTF-8");
-   Html::header_nocache();
+    $AJAX_INCLUDE = 1;
+    include('../../../inc/includes.php');
+    // What is returned is in JSON format.
+    header("Content-Type: application/json; charset=UTF-8");
+    Html::header_nocache();
 }
 
 Session::checkCentralAccess();
 
 /**
  * @param string whoisdate
- * @return string: dd-mm-yyyy or yyyy-mm-dd or whatever comes with whois :(
+ * @return JSON object with required fields:
+ *         - error value + message
+ *         - date_creation and _date_creation
+ *         - date_expiration and _date_expiration
+ *         - last_update_date and _last_update_date
+ * The last values are not always defined and are not displayed into the domains form.
+ *
+ * Purpose of this function is to return the date with a '-' as separator without any other information than day, month and year
  */
-function cleanupwhoisdate($whoisdate) {
+function ws_cleanupdate($whoisdate) {
     $values = explode(':',$whoisdate) ;
     $v = $values[1] ;
     $values = explode('T',$v) ;
     $v = str_replace('/','-',trim($values[0])) ;
     return $v ;
 }
+/**
+/*  * @param array woutput: what whois DB returned */
+/*  * @param array wstrings: which patterns are we looking for */
+/*  * @return string: the "right part" of the line */
+/*  * */
+/*  * Purpose of this function is to return the date with a '-' as separator without any other information than day, month and year */
+/*  *\/ */
+function ws_getinfo($woutput,$wstrings) {
+    $rightpart = "" ;
+    foreach ($wstrings as $w) {
+        if ($lines = preg_grep("/$w/",$woutput)) {
+            foreach($lines as $l) {
+                $rightpart = strtolower(ws_cleanupdate($l)) ;
+            }
+        }
+    }
+    return $rightpart;
+}
+//
+// What is the domain name
 $domainname = $_GET['domain'] ;
-
 //
 // Error handling
 // Positive value => Warnings
+$WHOIS_WARN_FORMAT = array('value' => 1, 'msg' => "__('The date format (DD-MM-YYYY) is used by default, no clue to verify it is the right one.')") ;
 // Null value = Everything's fine
+$WHOIS_OK = array('value' => 0, 'msg' => "__('Everything is fine. Really')") ;
 // Negative value => Error or unable to get information.
-$WHOIS_ERR_EU_DOMAIN = array( 'value' => -1, 'msg' => "_('EU domain names are not available for request.')") ;
-$WHOIS_ERR_WHOIS_REQUEST = array('value' => -2, 'msg' => "_('WHOIS request failed for some reason...')") ;
-$WHOIS_ERR_DOMAIN_DOES_NOT_EXIST = array('value' => -3, 'msg' => $domainname . ": " . "_(': Domain name does not exist')") ;
-$WHOIS_OK = array('value' => 0, 'msg' => "_('Everything is fine. Really')") ;
-$WHOIS_WARN_FORMAT = array('value' => 1, 'msg' => "_('The date format (DD-MM-YYYY) is used by default, no clue to verify it is the right one.')") ;
-
+$WHOIS_ERR_EU_DOMAIN = array( 'value' => -1, 'msg' => "__('EU domain names are not available for request.')") ;
+$WHOIS_ERR_WHOIS_REQUEST = array('value' => -2, 'msg' => "__('WHOIS request failed for some reason...')") ;
+$WHOIS_ERR_DOMAIN_DOES_NOT_EXIST = array('value' => -3, 'msg' => "__('Domain name does not exist')") ;
+$WHOIS_ERR_WHOIS_NOT_INSTALLED = array('value' => -4, 'msg' => "__('It seems whois program is not installed')") ;
+//
+// Array of returned values
 $myreturnvalues = array('error' => $WHOIS_OK) ;
-
+//
+// Here are the several strings identified as whois fields depending on which whois DB we are speaking with
+//
+// Creation time
 $createdstrings = array('^created:','^Creation Date','^Registration Time:','Domain Name Commencement Date:') ;
+//
+// Update time
 $updatedstrings = array('^Updated Date:','^last-update:') ;
-$expiratedstrings = array('^Expiry Date:','^Registrar Registration Expiration Date:','^Expiration Time:','Registry Expiry Date:') ;
+//
+// Expiration time
+$expiredstrings = array('^Expiry Date:','^Registrar Registration Expiration Date:','^Expiration Time:','Registry Expiry Date:') ;
+//
+// What the whois DB will return in case of non existing domain name
 $nodomainfound = array("^No match for domain","^%% No entries found in the AFNIC Database.","^NOT FOUND") ;
+//
+// Some whois DB (fr e.g.) precisely indicates what is the date format.
 $formatstrings = array('complete date format') ;
 
-// Domainname must be something like xxx.yy
-// This is not currently checked.
+// Domainname must be something like xxx.yy. This is not currently checked.
+//
 // Checking if domain is '.eu', can not be requested.
+// For some reasons EU whois DB does not agree to be requested by programs. Only humans are allowed.
+// Did not see any API neither.
 if (substr($domainname,-3) == '.eu') {
     $myreturnvalues['error'] = $WHOIS_ERR_EU_DOMAIN ;
 }
@@ -88,51 +113,43 @@ else {
     //
     // We already know that .eu domains are _not_ available for automatic request.
     if ($wresult != 0) {
-        $myreturnvalues['error'] = $WHOIS_ERR_WHOIS_REQUEST ;
-        if ($domain_does_not_exist) $myreturnvalues['error'] = $WHOIS_ERR_DOMAIN_DOES_NOT_EXIST ;
+        if ($domain_does_not_exist) {
+            $myreturnvalues['error'] = $WHOIS_ERR_DOMAIN_DOES_NOT_EXIST ;
+        }
+        else if ($wresult == 127) {
+            $myreturnvalues['error'] = $WHOIS_ERR_WHOIS_NOT_INSTALLED ;
+        }
+        else {
+            $myreturnvalues['error'] = $WHOIS_ERR_WHOIS_REQUEST ;
+        }
     }
     else if ($domain_does_not_exist) {
         $myreturnvalues['error'] = $WHOIS_ERR_DOMAIN_DOES_NOT_EXIST ;
     }
     else {
-
         /* Trying to figure out the format used for dates */
         /* Some nice servers tells us... */
         $formatok = 0 ;
         $updatedate = 0 ;
-        foreach ($formatstrings as $w) {
-            if ($lines = preg_grep("/$w/",$woutput)) {
-                foreach($lines as $l) {
-                    $f = strtolower(cleanupwhoisdate($l)) ;
-                }
-            }
-        }
+        $ret = ws_getinfo($woutput,$formatstrings) ;
+        if ($ret != "") $f = $ret ;
+        //
         // Looking for domain creation date. At least for this registrar.
-        foreach ($createdstrings as $w) {
-            if ($lines = preg_grep("/$w/",$woutput)) {
-                foreach($lines as $l) {
-                    $c = cleanupwhoisdate($l) ;
-                }
-            }
-        }
+        $ret = ws_getinfo($woutput,$createdstrings) ;
+        if ($ret != "") $c = $ret ;
+        //
         // Looking for last update.
         // This value is actually _not_ used. It's there if one want it anyway.
-        foreach ($updatedstrings as $w) {
-            if ($lines = preg_grep("/$w/",$woutput)) {
-                foreach($lines as $l) {
-                    $u = cleanupwhoisdate($l) ;
-                }
-            }
+        $ret = ws_getinfo($woutput,$updatedstrings) ;
+        if ($ret != "") {
+            $u = $ret ;
             $updatedate = 1 ;
         }
+        //
         // Looking for the expiration date. This one is the one everybody should be interested in.
-        foreach ($expiratedstrings as $w) {
-            if ($lines = preg_grep("/$w/",$woutput)) {
-                foreach($lines as $l) {
-                    $e = cleanupwhoisdate($l) ;
-                }
-            }
-        }
+        $ret = ws_getinfo($woutput,$expiredstrings) ;
+        if ($ret != "") $e = $ret ;
+        //
         // We did not get a format. Let's try to find out what it could be
         if (!$formatok) {
             $values = explode('-',$c) ;
@@ -152,7 +169,7 @@ else {
                 $f = 'mm-dd-yyyy' ;
             }
             else {
-                // There I could not see how math would help
+                // I could not see how math would help
                 // Let's decide it is the common european notation
                 // Yes, it's a bit selfish
                 $f = 'dd-mm-yyyy' ;
@@ -215,7 +232,7 @@ else {
         $myreturnvalues['date_creation'] = implode("-",array($cyear,$cmonth,$cday)) ;
         $myreturnvalues['date_expiration'] = implode("-",array($eyear,$emonth,$eday)) ;
         if ($updatedate) {
-            $myreturnvalues['_last_update_date'] = $u ; // Yes I know it's a disruption with the rest of the naming, but really guys? date_creation? This is a bit too frenchy, aint it?
+            $myreturnvalues['_last_update_date'] = $u ; // Yes I know it's a disruption with the rest of the naming, I've seen in GIT updates fields were renamed like 'creation_date' became 'date_creation'...
             $myreturnvalues['last_update_date'] = implode("-",array($uyear,$umonth,$uday)) ;
         }
     }

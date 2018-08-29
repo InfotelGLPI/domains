@@ -36,7 +36,6 @@ function plugin_init_domains() {
    $PLUGIN_HOOKS['assign_to_ticket']['domains'] = true;
 
    if (Session::getLoginUserID()) {
-
       Plugin::registerClass('PluginDomainsDomain', [
          'linkuser_tech_types'         => true,
          'linkgroup_tech_types'        => true,
@@ -81,6 +80,8 @@ function plugin_init_domains() {
 
       // End init, when all types are registered
       $PLUGIN_HOOKS['post_init']['domains'] = 'plugin_domains_postinit';
+       $PLUGIN_HOOKS['add_javascript']['domains'] = array();
+       $PLUGIN_HOOKS['add_javascript']['domains'][] = 'js/whois.js';
    }
 }
 
