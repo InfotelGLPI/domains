@@ -43,8 +43,6 @@ class PluginDomainsDomain extends CommonDBTM {
    static    $types            = ['Computer', 'Monitor', 'NetworkEquipment', 'Peripheral',
                                        'Phone', 'Printer', 'Software'];
    static    $tags             = '[DOMAIN_NAME]';
-   private   $setwhoisonblur = array('what' => 'else');
-   private   $setemptyonblur = "onBlur=\"\"" ;
 
    /**
     * @param int $nb
