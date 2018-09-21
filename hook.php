@@ -41,7 +41,7 @@ function plugin_domains_install() {
    if (!$DB->tableExists("glpi_plugin_domain") && !$DB->tableExists("glpi_plugin_domains_domains")) {
 
       $install = true;
-      $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/empty-2.0.0.sql");
+      $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/empty-2.0.2.sql");
 
    } else if ($DB->tableExists("glpi_plugin_domain") && !$DB->fieldExists("glpi_plugin_domain", "recursive")) {
 
@@ -76,7 +76,12 @@ function plugin_domains_install() {
       $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-1.5.0.sql");
    }
 
-   if ($DB->tableExists("glpi_plugin_domains_profiles")) {
+   if (!$DB->fieldExists("glpi_plugin_domains_domaintypes", "is_recursive")) {
+      $DB->runFile(GLPI_ROOT . "/plugins/domains/sql/update-2.0.2.sql");
+   }
+
+
+      if ($DB->tableExists("glpi_plugin_domains_profiles")) {
 
       $notepad_tables = ['glpi_plugin_domains_domains'];
 

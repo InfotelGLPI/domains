@@ -1,0 +1,1 @@
+ALTER TABLE `glpi_plugin_domains_domaintypes` ADD `is_recursive` TINYINT(1) NOT NULL DEFAULT '0';
