@@ -526,7 +526,7 @@ class PluginDomainsDomain extends CommonDBTM {
          if ($isadmin) {
             $actions['PluginDomainsDomain' . MassiveAction::CLASS_ACTION_SEPARATOR . 'install']   = _x('button', 'Associate');
             $actions['PluginDomainsDomain' . MassiveAction::CLASS_ACTION_SEPARATOR . 'uninstall'] = _x('button', 'Dissociate');
-
+            $actions['PluginDomainsDomain' . MassiveAction::CLASS_ACTION_SEPARATOR . 'duplicate']  = _x('button', 'Duplicate');
             if (Session::haveRight('transfer', READ) && Session::isMultiEntitiesMode()
             ) {
                $actions['PluginDomainsDomain' . MassiveAction::CLASS_ACTION_SEPARATOR . 'transfer'] = __('Transfer');
@@ -577,6 +577,10 @@ class PluginDomainsDomain extends CommonDBTM {
             Dropdown::show('Entity');
             echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
             return true;
+            break;
+
+         case "duplicate" :
+            Dropdown::show('Entity');
             break;
       }
       return parent::showMassiveActionsSubForm($ma);
@@ -669,6 +673,24 @@ class PluginDomainsDomain extends CommonDBTM {
                }
             }
             return;
+
+         case "duplicate" :
+            if ($item->getType() == 'PluginDomainsDomain') {
+               $input     = $ma->getInput();
+               foreach ($ids as $key => $val) {
+                  $item->getFromDB($key);
+                  unset($item->fields["id"]);
+                  $item->fields["name"]    = addslashes($item->fields["name"]);
+                  $item->fields["comment"] = addslashes($item->fields["comment"]);
+                  $item->fields["entities_id"] = $input['entities_id'];
+                  if ($item->add($item->fields)) {
+                     $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
+                  } else {
+                     $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
+                  }
+               }
+            }
+            break;
       }
       parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
    }
