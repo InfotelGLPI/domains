@@ -1,0 +1,74 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Domains Development Team
+# This file is distributed under the same license as the GLPI - Domains plugin package.
+# 
+# Translators:
+# Markku Vepsä, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - domains plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 07:58+0200\n"
+"PO-Revision-Date: 2018-10-11 03:39+0000\n"
+"Last-Translator: Markku Vepsä\n"
+"Language-Team: Finnish (Finland) (http://www.transifex.com/tsmr/GLPI_domains/language/fi_FI/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fi_FI\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: hook.php:431 inc/domain.class.php:968 inc/domain_item.class.php:565
+msgid "Does not expire"
+msgstr "Ei vanhene"
+
+#: hook.php:504 inc/domain_item.class.php:483
+msgid "Associate a domain"
+msgstr "Liitä verkkotunnus"
+
+#: setup.php:94 inc/domain.class.php:54 inc/menu.class.php:42
+#: inc/profile.class.php:175
+msgid "Domain"
+msgid_plural "Domains"
+msgstr[0] "Verkkotunnus"
+msgstr[1] "Verkkotunnukset"
+
+#: inc/config.class.php:48
+msgid "Plugin Setup"
+msgstr "Liitännäisen asetukset"
+
+#: inc/config.class.php:83
+msgid "Time of checking of validity of domains"
+msgstr "Verkkotunnuksien voimassaolon tarkistusaika"
+
+#: inc/config.class.php:92 inc/domain.class.php:764
+msgid "Domains expired since more"
+msgstr "Verkkotunnukset, joiden voimassaolo päättyy yli"
+
+#: inc/config.class.php:96
+msgid "Domains expiring in less than"
+msgstr "Verkkotunnukset, joiden voimassaoloaika päättyy alle"
+
+#: inc/domain.class.php:382
+msgid "Empty for infinite"
+msgstr "Tyhjä = Ääretön"
+
+#: inc/domain.class.php:684 inc/notificationtargetdomain.class.php:86
+msgid "Expired or expiring domains"
+msgstr "Vanhentuneet tai vanhentumassa olevat verkkotunnukset"
+
+#: inc/domaintype.class.php:47
+msgid "Domain type"
+msgid_plural "Domain types"
+msgstr[0] "Verkkotunnuksen tyyppi"
+msgstr[1] "Verkkotunnuksien tyypit"
+
+#: inc/notificationtargetdomain.class.php:43
+#: inc/notificationtargetdomain.class.php:57
+msgid "Expired domains"
+msgstr "Vanhentuneet verkkotunnukset"
+
+#: inc/notificationtargetdomain.class.php:44
+#: inc/notificationtargetdomain.class.php:58
+msgid "Expiring domains"
+msgstr "Vanhentumassa olevat verkkotunnukset"
