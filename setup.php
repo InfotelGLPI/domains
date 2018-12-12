@@ -92,12 +92,17 @@ function plugin_version_domains() {
 
    return [
       'name'           => _n('Domain', 'Domains', 2, 'domains'),
-      'version'        => '2.0.2',
+      'version'        => '2.1.0',
       'oldname'        => 'domain',
       'license'        => 'GPLv2+',
       'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
       'homepage'       => 'https://github.com/InfotelGLPI/domains',
-      'minGlpiVersion' => '9.3',// For compatibility / no install in version < 9.
+      'requirements'   => [
+         'glpi' => [
+            'min' => '9.4',
+            'dev' => false
+         ]
+      ]
    ];
 
 }
@@ -107,8 +112,11 @@ function plugin_version_domains() {
  * @return bool
  */
 function plugin_domains_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '9.3', 'lt') || version_compare(GLPI_VERSION, '9.4', 'ge')) {
-      echo __('This plugin requires GLPI >= 9.3');
+   if (version_compare(GLPI_VERSION, '9.4', 'lt')
+       || version_compare(GLPI_VERSION, '9.5', 'ge')) {
+      if (method_exists('Plugin', 'messageIncompatible')) {
+         echo Plugin::messageIncompatible('core', '9.4');
+      }
       return false;
    }
    return true;

@@ -504,10 +504,12 @@ function plugin_domains_giveItem($type, $ID, $data, $num) {
  * @return array
  */
 function plugin_domains_MassiveActions($type) {
-
-   if (in_array($type, PluginDomainsDomain::getTypes(true))) {
-      return ['PluginDomainsDomain' . MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_domains_add_item' =>
-                      __('Associate a domain', 'domains')];
+   $plugin = new Plugin();
+   if ($plugin->isActivated('domains')) {
+      if (in_array($type, PluginDomainsDomain::getTypes(true))) {
+         return ['PluginDomainsDomain' . MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_domains_add_item' =>
+                    __('Associate a domain', 'domains')];
+      }
    }
    return [];
 }

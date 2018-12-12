@@ -58,5 +58,5 @@ if (isset($_POST["domaintypes"])) {
          'width' => '50%',
          'entity' => $_POST['entity'],
          'rand' => $_POST['rand'],
-         'condition' => "glpi_plugin_domains_domains.plugin_domains_domaintypes_id='" . $_POST["domaintypes"] . "'"]);
+         'condition' => ["glpi_plugin_domains_domains.plugin_domains_domaintypes_id" => $_POST["domaintypes"]]]);
 }
