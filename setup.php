@@ -27,6 +27,8 @@
  --------------------------------------------------------------------------
  */
 
+define('PLUGIN_DOMAINS_VERSION', '2.1.0');
+
 // Init the hooks of the plugins -Needed
 function plugin_init_domains() {
    global $PLUGIN_HOOKS;
@@ -92,7 +94,7 @@ function plugin_version_domains() {
 
    return [
       'name'           => _n('Domain', 'Domains', 2, 'domains'),
-      'version'        => '2.1.0',
+      'version'        => PLUGIN_DOMAINS_VERSION,
       'oldname'        => 'domain',
       'license'        => 'GPLv2+',
       'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
