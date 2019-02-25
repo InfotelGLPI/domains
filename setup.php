@@ -97,7 +97,7 @@ function plugin_version_domains() {
       'version'        => PLUGIN_DOMAINS_VERSION,
       'oldname'        => 'domain',
       'license'        => 'GPLv2+',
-      'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
+      'author'         => "<a href='http://blogglpi.infotel.com'>Infotel</a>",
       'homepage'       => 'https://github.com/InfotelGLPI/domains',
       'requirements'   => [
          'glpi' => [
