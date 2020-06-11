@@ -481,7 +481,7 @@ class PluginDomainsDomain extends CommonDBTM {
 
       $values = [0 => Dropdown::EMPTY_VALUE];
 
-      while ($data = $DB->fetch_assoc($result)) {
+      while ($data = $DB->fetchAssoc($result)) {
          $values[$data['id']] = $data['name'];
       }
 
@@ -927,7 +927,7 @@ class PluginDomainsDomain extends CommonDBTM {
       $domain  = new PluginDomainsDomain();
       $used    = [];
       if ($numrows = $DB->numrows($result)) {
-         while ($data = $DB->fetch_assoc($result)) {
+         while ($data = $DB->fetchAssoc($result)) {
             $domains[$data['assocID']] = $data;
             $used[$data['id']]         = $data['id'];
          }
