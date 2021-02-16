@@ -14,6 +14,7 @@ CREATE TABLE `glpi_plugin_domains_domains` (
   `notepad`                       LONGTEXT COLLATE utf8_unicode_ci,
   `others`                        VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_helpdesk_visible`           INT(11)    NOT NULL     DEFAULT '1',
+  `automatically_request_whoisdb` INT(11)    NOT NULL     DEFAULT '1',
   `date_mod`                      DATETIME                DEFAULT NULL,
   `is_deleted`                    TINYINT(1) NOT NULL     DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -25,6 +26,7 @@ CREATE TABLE `glpi_plugin_domains_domains` (
   KEY `suppliers_id` (`suppliers_id`),
   KEY `date_mod` (`date_mod`),
   KEY `is_helpdesk_visible` (`is_helpdesk_visible`),
+  KEY `automatically_request_whoisdb` (`automatically_request_whoisdb`),
   KEY `is_deleted` (`is_deleted`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci;
 

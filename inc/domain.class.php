@@ -336,22 +336,28 @@ class PluginDomainsDomain extends CommonDBTM {
     * @return bool
     */
    function showForm($ID, $options = []) {
-
+       //
+       // Let's add a div here to make some loading overview
+       echo '<div id="loadingdivid" style="display:none; width:80%; height:80%; position: absolute; margin: 0px auto 5px 10%;"><div class="contents"></div></div>' ; 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
-
       echo "<td>" . __('Name') . "</td>";
       echo "<td>";
-      Html::autocompletionTextField($this, "name");
+      Html::autocompletionTextField($this, "name",array('attrs' => array('onBlur' => 'checkwhois();'))) ;
       echo "</td>";
-
       echo "<td>" . __('Others') . "</td>";
       echo "<td>";
       Html::autocompletionTextField($this, "others");
       echo "</td>";
-
+      echo "</tr>";
+      //
+      // This allows to display error messages when needed
+      // Everything is handled by the ajax/whois.js file and checkwhois() function.
+      echo "<tr class='tab_bg_1' style='display: none;' name='tr_whois'>";
+      echo "<td colspan='2' name='whois_label_error_message'>" . __("Whois error message") . "</td>";
+      echo "<td colspan='2' style='color:red;' name='whois_error_message'></td>" ;
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -413,7 +419,15 @@ class PluginDomainsDomain extends CommonDBTM {
                                     'condition' => ['is_assign' => 1]]);
       echo "</td>";
 
-      echo "<td class='center' colspan='2'>";
+      echo "<td>" . __('Automatically check whois database') . "</td>" ;
+      echo "<td>";
+      // Default value for the whois database checking is true by default.
+      if (!isset($this->fields['automatically_request_whoisdb']) or
+      $this->fields['automatically_request_whoisdb'] == "") {
+          $this->fields['automatically_request_whoisdb'] = 1 ;
+      }
+      Dropdown::showYesNo('automatically_request_whoisdb', $this->fields['automatically_request_whoisdb']);
+      echo "</td>";
       echo "</td>";
 
       echo "</tr>";
@@ -1020,5 +1034,4 @@ class PluginDomainsDomain extends CommonDBTM {
 
       return parent::generateLinkContents($link, $item);
    }
-
 }
